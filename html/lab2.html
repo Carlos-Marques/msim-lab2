@@ -1,0 +1,730 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lab2</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-18"><meta name="DC.source" content="lab2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Exerc&iacute;cio 10</a></li><li><a href="#3">Exerc&iacute;cio 11</a></li><li><a href="#7">Exerc&iacute;cio 12</a></li><li><a href="#9">Exerc&iacute;cio 13</a></li></ul></div><h2 id="1">Exerc&iacute;cio 10</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Valores do intervalo +-yl no qual a comuta&ccedil;&atilde;o se torna linear para testar</span>
+yl = [0, 0.2, 0.4];
+
+<span class="comment">%Vector de posi&ccedil;&otilde;es e velocidades para criar meshgrid de teste do</span>
+<span class="comment">%controlador</span>
+y = linspace (-2, 2);
+dy = linspace (-2, 2);
+
+[Y, dY] = meshgrid(y, dy);
+
+<span class="comment">%Figure counter para o for</span>
+fn = 0;
+
+<span class="keyword">for</span> n = 1:length(yl)
+    <span class="comment">%Inicializa&ccedil;&atilde;o de u com zeros em todos os indexes</span>
+    U = zeros(size(Y));
+
+    <span class="comment">%Calculo dos k's</span>
+    k1 = 1/yl(n);
+    k2 = sqrt(2*k1);
+
+    <span class="comment">%Subsys por ramos com entrada de -y</span>
+    idx = find(abs(Y) &lt;= yl(n));
+    U(idx) = (k1/k2)*-Y(idx);
+
+    idx = find(abs(Y) &gt; yl(n));
+    U(idx) = sign( -Y(idx) ).*(sqrt(2.*abs( -Y(idx) ))-(1/k2));
+
+    <span class="comment">%Subtrac&ccedil;&atilde;o de dy</span>
+    U = U - dY;
+
+    <span class="comment">%Aplica&ccedil;&atilde;o do ganho k2</span>
+    U = U * k2;
+
+    <span class="comment">%Filtro de satura&ccedil;&atilde;o</span>
+    U(U &gt; 1) = 1;
+    U(U &lt; -1) = -1;
+
+    figure;
+    fn = fn+1;
+    surf(y, dy, U);
+    view(70, 40);
+    grid <span class="string">on</span>;
+    title(sprintf(<span class="string">'Fig.%d - Varia&ccedil;&atilde;o do Sinal de Controlo (u) para y_l=%.1f'</span>, fn, yl(n)));
+    xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+    ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+    zlabel(<span class="string">'Sinal de Controlo (u)'</span>);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="lab2_01.png" alt=""> <img vspace="5" hspace="5" src="lab2_02.png" alt=""> <img vspace="5" hspace="5" src="lab2_03.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Pela an&aacute;lise do diagrama de blocos da Fig.5 do relat&oacute;rio verificou-se que o sistema consistia do Subsys dado pela equa&ccedil;&atilde;o de dois ramos:</p><p><img src="lab2_eq03996353852744597969.png" alt="$u(y, \dot{y}) =  \frac{k1}{k2}*x$">, <img src="lab2_eq17659634161994509827.png" alt="$|x| \leq y_l$"></p><p><img src="lab2_eq04860203783997631681.png" alt="$u(y, \dot{y}) =  sgn(x)[\sqrt(2|x|)-\frac{1}{k2}]$">, <img src="lab2_eq00909539929709463855.png" alt="$|x| &gt; y_l$"></p><p>Alimentado pela subtra&ccedil;&atilde;o entre o sinal de Refer&ecirc;ncia e y que neste caso &eacute; dado por:</p><p><img src="lab2_eq01451123224050065148.png" alt="$x = Ref-y = 0 - y = -y$"></p><p>De seguida &agrave; sa&iacute;da do Subsys &eacute; subtra&iacute;do <img src="lab2_eq03663895960638956487.png" alt="$\dot{y}$"> gerando um sinal ao &eacute; aplicado um ganho k2 que por sua vez &eacute; filtrado limitando os valores superiores a 1 e inferiores a -1.</p><p>Este sistema tem um princ&iacute;pio de funcionamento semelhante ao da quest&atilde;o anterior diferindo nos pontos dentro do intervalo de yl no qual a derivada da fun&ccedil;&atilde;o do Subsys n&atilde;o tende para infinito, ou seja, n&atilde;o existe a mesma discrepancia entre valores perto da origem, logo em vez da cabe&ccedil;a disco oscilar constantemente &agrave; volta da orgirem (caso da Fig.1) temos uma desacelara&ccedil;&atilde;o mais suave &agrave; medida que se aproxima do valor de refer&ecirc;ncia evitando assim o comportamento de chattering. Tamb&eacute;m podemos concluir da Fig.2 e Fig.3 que quanto maior for esse intervalo, yl, mais sauve &eacute; a desacelara&ccedil;&atilde;o. Por isso deve se escolher yl de maneira a n&atilde;o prejudicar muito o tempo que a cabe&ccedil;a leva a chegar a posi&ccedil;&atilde;o de refer&ecirc;ncia.</p><h2 id="3">Exerc&iacute;cio 11</h2><p><h3>Controlador completo</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Subsys com ambos os ramos</span>
+f = 1;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 7;
+
+<span class="comment">%Refer&ecirc;ncia escolhida</span>
+Ref = 0;
+
+<span class="comment">%Sem perturba&ccedil;&atilde;o</span>
+b = 0;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'modified_controller'</span>);
+
+figure;
+plot(tout, y);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.4 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+
+figure;
+plot(tout, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.5 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(y, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.6 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_04.png" alt=""> <img vspace="5" hspace="5" src="lab2_05.png" alt=""> <img vspace="5" hspace="5" src="lab2_06.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p><h3>Controlador com apenas ramo superior da função f(x)</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Subsys com apenas o ramo superior</span>
+f = 0;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 7;
+
+<span class="comment">%Refer&ecirc;ncia escolhida</span>
+Ref = 0;
+
+<span class="comment">%Sem perturba&ccedil;&atilde;o</span>
+b = 0;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'modified_controller'</span>);
+
+figure;
+plot(tout, y);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.7 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+
+figure;
+plot(tout, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.8 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(y, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.9 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_07.png" alt=""> <img vspace="5" hspace="5" src="lab2_08.png" alt=""> <img vspace="5" hspace="5" src="lab2_09.png" alt=""> <p><b>Coment&aacute;rios:</b></p><h2 id="7">Exerc&iacute;cio 12</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Subsys com ambos os ramos</span>
+f = 1;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 7;
+
+<span class="comment">%Refer&ecirc;ncia escolhida</span>
+Ref = 0;
+
+<span class="comment">%Com perturba&ccedil;&atilde;o</span>
+b = 0.025;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'modified_controller'</span>);
+
+figure;
+plot(tout, y);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.10 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+
+figure;
+plot(tout, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.11 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(y, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.12 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_10.png" alt=""> <img vspace="5" hspace="5" src="lab2_11.png" alt=""> <img vspace="5" hspace="5" src="lab2_12.png" alt=""> <p><b>Coment&aacute;rios:</b></p><h2 id="9">Exerc&iacute;cio 13</h2><p><h3>Exercício 13.1 - Referência por steps</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Subsys com ambos os ramos</span>
+f = 1;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 20;
+
+<span class="comment">%Com perturba&ccedil;&atilde;o</span>
+b = 0;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'steps'</span>);
+
+figure;
+plot(tout, steps);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.13 - Refer&ecirc;ncia por steps'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Valor Refer&ecirc;ncia'</span>);
+
+sim(<span class="string">'e_131'</span>);
+
+figure;
+plot(tout, steps, <span class="string">"DisplayName"</span>, <span class="string">"Ref"</span>);
+hold <span class="string">on</span>;
+plot(tout, y, <span class="string">"DisplayName"</span>, <span class="string">"y"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.14 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+legend();
+
+figure;
+plot(tout, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.15 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(y, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.16 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_13.png" alt=""> <img vspace="5" hspace="5" src="lab2_14.png" alt=""> <img vspace="5" hspace="5" src="lab2_15.png" alt=""> <img vspace="5" hspace="5" src="lab2_16.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p><h3>Exercício 13.2 - Referência por rampas</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Subsys com ambos os ramos</span>
+f = 1;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 20;
+
+<span class="comment">%Com perturba&ccedil;&atilde;o</span>
+b = 0;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'ramps'</span>);
+
+figure;
+plot(tout, ramps);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.17 - Refer&ecirc;ncia por rampas'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Valor Refer&ecirc;ncia'</span>);
+
+sim(<span class="string">'e_132'</span>);
+
+figure;
+plot(tout, ramps, <span class="string">"DisplayName"</span>, <span class="string">"Ref"</span>);
+hold <span class="string">on</span>;
+plot(tout, y, <span class="string">"DisplayName"</span>, <span class="string">"y"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.18 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+legend(<span class="string">'Location'</span>, <span class="string">'NorthWest'</span>);
+
+figure;
+plot(tout, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.19 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(y, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.20 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+<span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+</pre><p><b>Coment&aacute;rios:</b></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Exercício 10
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Valores do intervalo +-yl no qual a comutação se torna linear para testar
+yl = [0, 0.2, 0.4];
+
+%Vector de posições e velocidades para criar meshgrid de teste do
+%controlador
+y = linspace (-2, 2);
+dy = linspace (-2, 2);
+
+[Y, dY] = meshgrid(y, dy);
+
+%Figure counter para o for
+fn = 0;
+
+for n = 1:length(yl)
+    %Inicialização de u com zeros em todos os indexes
+    U = zeros(size(Y));
+
+    %Calculo dos k's
+    k1 = 1/yl(n);
+    k2 = sqrt(2*k1);
+
+    %Subsys por ramos com entrada de -y
+    idx = find(abs(Y) <= yl(n));
+    U(idx) = (k1/k2)*-Y(idx);
+
+    idx = find(abs(Y) > yl(n));
+    U(idx) = sign( -Y(idx) ).*(sqrt(2.*abs( -Y(idx) ))-(1/k2));
+
+    %Subtracção de dy
+    U = U - dY;
+
+    %Aplicação do ganho k2
+    U = U * k2;
+
+    %Filtro de saturação
+    U(U > 1) = 1;
+    U(U < -1) = -1;
+
+    figure;
+    fn = fn+1;
+    surf(y, dy, U);
+    view(70, 40);
+    grid on;
+    title(sprintf('Fig.%d - Variação do Sinal de Controlo (u) para y_l=%.1f', fn, yl(n)));
+    xlabel('Posição (y)');
+    ylabel('Velocidade ($\dot{y}$)', 'Interpreter', 'latex');
+    zlabel('Sinal de Controlo (u)');
+end
+
+%%
+% *Comentários:*
+% 
+% Pela análise do diagrama de blocos da Fig.5 do relatório
+% verificou-se que o sistema consistia do Subsys dado pela equação de dois
+% ramos:
+%
+% $u(y, \dot{y}) =  \frac{k1}{k2}*x$, $|x| \leq y_l$
+%
+% $u(y, \dot{y}) =  sgn(x)[\sqrt(2|x|)-\frac{1}{k2}]$, $|x| > y_l$
+%
+% Alimentado pela subtração entre o sinal de Referência e y que neste caso
+% é dado por:
+%
+% $x = Ref-y = 0 - y = -y$
+%
+% De seguida à saída do Subsys é subtraído $\dot{y}$ gerando um sinal ao é
+% aplicado um ganho k2 que por sua vez é filtrado limitando os valores
+% superiores a 1 e inferiores a -1.
+% 
+% Este sistema tem um princípio de funcionamento semelhante ao da questão
+% anterior diferindo nos pontos dentro do intervalo de yl no qual a
+% derivada da função do Subsys não tende para infinito, ou seja, não existe
+% a mesma discrepancia entre valores perto da origem, logo em vez da cabeça 
+% disco oscilar constantemente à volta da orgirem (caso da Fig.1) temos uma
+% desacelaração mais suave à medida que se aproxima do valor de referência 
+% evitando assim o comportamento de chattering. Também podemos concluir da
+% Fig.2 e Fig.3 que quanto maior for esse intervalo, yl, mais sauve é a
+% desacelaração. Por isso deve se escolher yl de maneira a não prejudicar
+% muito o tempo que a cabeça leva a chegar a posição de referência.
+
+%% Exercício 11
+% <html><h3>Controlador completo</h3></html>
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Subsys com ambos os ramos
+f = 1;
+
+%Tempo de Simulação
+ttotal = 7;
+
+%Referência escolhida
+Ref = 0;
+
+%Sem perturbação
+b = 0;
+
+%Intervalo escolhido do exercício anterior
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('modified_controller');
+
+figure;
+plot(tout, y);
+grid on;
+title('Fig.4 - Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+
+figure;
+plot(tout, dy);
+grid on;
+title('\textbf{Fig.5 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(y, dy);
+grid on;
+title('\textbf{Fig.6 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+%% 
+% *Comentários:*
+
+%%
+% <html><h3>Controlador com apenas ramo superior da função f(x)</h3></html>
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Subsys com apenas o ramo superior
+f = 0;
+
+%Tempo de Simulação
+ttotal = 7;
+
+%Referência escolhida
+Ref = 0;
+
+%Sem perturbação
+b = 0;
+
+%Intervalo escolhido do exercício anterior 
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('modified_controller');
+
+figure;
+plot(tout, y);
+grid on;
+title('Fig.7 - Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+
+figure;
+plot(tout, dy);
+grid on;
+title('\textbf{Fig.8 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(y, dy);
+grid on;
+title('\textbf{Fig.9 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+%%
+% *Comentários:*
+
+%% Exercício 12
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Subsys com ambos os ramos
+f = 1;
+
+%Tempo de Simulação
+ttotal = 7;
+
+%Referência escolhida
+Ref = 0;
+
+%Com perturbação
+b = 0.025;
+
+%Intervalo escolhido do exercício anterior
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('modified_controller');
+
+figure;
+plot(tout, y);
+grid on;
+title('Fig.10 - Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+
+figure;
+plot(tout, dy);
+grid on;
+title('\textbf{Fig.11 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(y, dy);
+grid on;
+title('\textbf{Fig.12 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+%%
+% *Comentários:*
+
+%% Exercício 13
+% <html><h3>Exercício 13.1 - Referência por steps</h3></html>
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Subsys com ambos os ramos
+f = 1;
+
+%Tempo de Simulação
+ttotal = 20;
+
+%Com perturbação
+b = 0;
+
+%Intervalo escolhido do exercício anterior
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('steps');
+
+figure;
+plot(tout, steps);
+grid on;
+title('Fig.13 - Referência por steps');
+xlabel('Tempo');
+ylabel('Valor Referência');
+
+sim('e_131');
+
+figure;
+plot(tout, steps, "DisplayName", "Ref");
+hold on;
+plot(tout, y, "DisplayName", "y");
+grid on;
+title('Fig.14 - Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+legend();
+
+figure;
+plot(tout, dy);
+grid on;
+title('\textbf{Fig.15 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(y, dy);
+grid on;
+title('\textbf{Fig.16 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+%%
+% *Comentários:*
+
+%%
+% <html><h3>Exercício 13.2 - Referência por rampas</h3></html>
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Subsys com ambos os ramos
+f = 1;
+
+%Tempo de Simulação
+ttotal = 20;
+
+%Com perturbação
+b = 0;
+
+%Intervalo escolhido do exercício anterior
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('ramps');
+
+figure;
+plot(tout, ramps);
+grid on;
+title('Fig.17 - Referência por rampas');
+xlabel('Tempo');
+ylabel('Valor Referência');
+
+sim('e_132');
+
+figure;
+plot(tout, ramps, "DisplayName", "Ref");
+hold on;
+plot(tout, y, "DisplayName", "y");
+grid on;
+title('Fig.18 - Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+legend('Location', 'NorthWest');
+
+figure;
+plot(tout, dy);
+grid on;
+title('\textbf{Fig.19 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(y, dy);
+grid on;
+title('\textbf{Fig.20 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+%Reset do ambiente de trabalho
+clear;
+close all;
+%%
+% *Comentários:*
+##### SOURCE END #####
+--></body></html>

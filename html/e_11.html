@@ -1,0 +1,332 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Exerc&iacute;cio 11</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-18"><meta name="DC.source" content="e_11.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Exerc&iacute;cio 11</h1><p><h3>Controlador completo</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%Subsys com ambos os ramos</span>
+f = 1;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 7;
+
+<span class="comment">%Refer&ecirc;ncia escolhida</span>
+Ref = 0;
+
+<span class="comment">%Sem perturba&ccedil;&atilde;o</span>
+b = 0;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'modified_controller'</span>);
+
+figure;
+plot(tout, y);
+grid <span class="string">on</span>;
+title(<span class="string">'Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+
+figure;
+plot(tout, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(y, dy);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+
+figure;
+plot(tout, u);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="e_11_01.png" alt=""> <img vspace="5" hspace="5" src="e_11_02.png" alt=""> <img vspace="5" hspace="5" src="e_11_03.png" alt=""> <img vspace="5" hspace="5" src="e_11_04.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Da an&aacute;lise da Fig.x, Fig.x, Fig.x e Fig.x podemos verificar que o comportamento de chattering desapareceu tal como foi previsto no exerc&iacute;cio anterior. Tamb&eacute;m podemos ver o efeito do intervalo <img src="e_11_eq07046700233771178818.png" alt="$y_l$"> que eliminou o efeito de chattering a custo da velocidade de resposta do sistema. Esta degrada&ccedil;&atilde;o temporal &eacute; maior quanto maior for <img src="e_11_eq07046700233771178818.png" alt="$y_l$"> que para <img src="e_11_eq02994370638794883880.png" alt="$y_l = 0.2$"> corresponde a um atraso de resposta de x unidades temporais.</p><p><h3>Controlador com apenas ramo superior da função f(x)</h3></p><pre class="codeinput"><span class="comment">%Valores do controlador completo</span>
+y0 = y;
+dy0 = dy;
+u0 = u;
+
+<span class="comment">%Subsys com apenas o ramo superior</span>
+f = 0;
+
+<span class="comment">%Tempo de Simula&ccedil;&atilde;o</span>
+ttotal = 7;
+
+<span class="comment">%Refer&ecirc;ncia escolhida</span>
+Ref = 0;
+
+<span class="comment">%Sem perturba&ccedil;&atilde;o</span>
+b = 0;
+
+<span class="comment">%Intervalo escolhido do exerc&iacute;cio anterior</span>
+yl = 0.2;
+
+<span class="comment">%Calculo dos k's</span>
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim(<span class="string">'modified_controller'</span>);
+
+figure;
+plot(tout, y0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(tout, y, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+legend();
+
+figure;
+plot(tout, dy0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(tout, dy, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+legend(<span class="string">'Location'</span>, <span class="string">'NorthWest'</span>);
+
+figure;
+plot(y0, dy0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(y, dy, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+legend();
+
+figure;
+plot(tout, u0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(tout, u, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+legend();
+</pre><img vspace="5" hspace="5" src="e_11_05.png" alt=""> <img vspace="5" hspace="5" src="e_11_06.png" alt=""> <img vspace="5" hspace="5" src="e_11_07.png" alt=""> <img vspace="5" hspace="5" src="e_11_08.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Apartir da an&aacute;lise da Fig.x, Fig.x, Fig.x e Fig.x podemos concluir que o controlador com o Subsys descrito apenas pelo ramo superior tem um maior overshot no Sinal de Controlo o que por sua vez corresponde a uma velocidade m&aacute;xima maior e uma acelara&ccedil;&atilde;o m&aacute;xima superior desnecess&aacute;ria pois nada contribu&iacute; para a velocidade de resposta do sistema sendo o controlador completo de superior qualidade nestas condi&ccedil;&otilde;es.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Exercício 11
+% <html><h3>Controlador completo</h3></html>
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+%Subsys com ambos os ramos
+f = 1;
+
+%Tempo de Simulação
+ttotal = 7;
+
+%Referência escolhida
+Ref = 0;
+
+%Sem perturbação
+b = 0;
+
+%Intervalo escolhido do exercício anterior
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('modified_controller');
+
+figure;
+plot(tout, y);
+grid on;
+title('Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+
+figure;
+plot(tout, dy);
+grid on;
+title('\textbf{Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(y, dy);
+grid on;
+title('\textbf{Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+figure;
+plot(tout, u);
+grid on;
+title('\textbf{Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Sinal de Controlo (u(y, $\dot{y}$))','Interpreter','latex');
+
+%% 
+% *Comentários:*
+%
+% Da análise da Fig.x, Fig.x, Fig.x e Fig.x podemos verificar que o
+% comportamento
+% de chattering desapareceu tal como foi previsto no exercício anterior.
+% Também podemos ver o efeito do intervalo $y_l$ que eliminou o efeito de
+% chattering a custo da velocidade de resposta do sistema. Esta degradação
+% temporal é maior quanto maior for $y_l$ que para $y_l = 0.2$ corresponde
+% a um atraso de resposta de x unidades temporais.
+
+%%
+% <html><h3>Controlador com apenas ramo superior da função f(x)</h3></html>
+%Valores do controlador completo
+y0 = y;
+dy0 = dy;
+u0 = u;
+
+%Subsys com apenas o ramo superior
+f = 0;
+
+%Tempo de Simulação
+ttotal = 7;
+
+%Referência escolhida
+Ref = 0;
+
+%Sem perturbação
+b = 0;
+
+%Intervalo escolhido do exercício anterior 
+yl = 0.2;
+
+%Calculo dos k's
+k1 = 1/yl;
+k2 = sqrt(2*k1);
+
+sim('modified_controller');
+
+figure;
+plot(tout, y0, "DisplayName", "completo");
+hold on;
+plot(tout, y, "DisplayName", "ramo superior");
+grid on;
+title('Evolução temporal da posição radial da cabeça (y)');
+xlabel('Tempo');
+ylabel('Posição (y)');
+legend();
+
+figure;
+plot(tout, dy0, "DisplayName", "completo");
+hold on;
+plot(tout, dy, "DisplayName", "ramo superior");
+grid on;
+title('\textbf{Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+legend('Location', 'NorthWest');
+
+figure;
+plot(y0, dy0, "DisplayName", "completo");
+hold on;
+plot(y, dy, "DisplayName", "ramo superior");
+grid on;
+title('\textbf{Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+legend();
+
+figure;
+plot(tout, u0, "DisplayName", "completo");
+hold on;
+plot(tout, u, "DisplayName", "ramo superior");
+grid on;
+title('\textbf{Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Sinal de Controlo (u(y, $\dot{y}$))','Interpreter','latex');
+legend();
+
+%%
+% *Comentários:*
+%
+% Apartir da análise da Fig.x, Fig.x, Fig.x e Fig.x podemos concluir que o
+% controlador com o Subsys descrito apenas pelo ramo superior tem um maior
+% overshot no Sinal de Controlo o que por sua vez corresponde a uma
+% velocidade máxima maior e uma acelaração máxima superior desnecessária 
+% pois nada contribuí para a velocidade de resposta do sistema sendo o
+% controlador completo de superior qualidade nestas condições.
+##### SOURCE END #####
+--></body></html>

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>e_10</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-16"><meta name="DC.source" content="e_10.m"><style type="text/css">
+      --><title>Exerc&iacute;cio 10</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-18"><meta name="DC.source" content="e_10.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,96 +66,138 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% &lt;html&gt;&lt;h3&gt;Exerc&iacute;cio 10&lt;/h3&gt;&lt;/html&gt;</span>
-<span class="comment">%Reset do ambiente de trabalho</span>
+  </style></head><body><div class="content"><h1>Exerc&iacute;cio 10</h1><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
 
-<span class="comment">%Tempo da simula&ccedil;&atilde;o</span>
-ttotal = 10;
+<span class="comment">%Valores do intervalo +-yl no qual a comuta&ccedil;&atilde;o se torna linear para testar</span>
+yl = [0, 0.2, 0.4];
 
-<span class="comment">%Escolha do intervalo +-yl no qual a comuta&ccedil;&atilde;o se torna linear</span>
-yl = 0.4;
-
-<span class="comment">%Vector de posi&ccedil;&otilde;es e velocidades para testar o controlador modificado</span>
+<span class="comment">%Vector de posi&ccedil;&otilde;es e velocidades para criar meshgrid de teste do</span>
+<span class="comment">%controlador</span>
 y = linspace (-2, 2);
 dy = linspace (-2, 2);
 
-<span class="comment">%Inicializa&ccedil;&atilde;o de u com zeros em todos os indexes</span>
-u = zeros(size(y));
+[Y, dY] = meshgrid(y, dy);
 
-<span class="comment">%Calculo dos k's</span>
-k1 = 1/yl;
-k2 = sqrt(2*k1);
+<span class="keyword">for</span> n = 1:length(yl)
+    <span class="comment">%Inicializa&ccedil;&atilde;o de u com zeros em todos os indexes</span>
+    U = zeros(size(Y));
 
-<span class="comment">%Subsys por ramos com entrada de -y</span>
-<span class="keyword">for</span> n = 1:length(y)
-    <span class="keyword">if</span> abs(y(n)) &lt;= yl
-        u(n) = (k1/k2)*-y(n);
-    <span class="keyword">else</span>
-        u(n) = sign( -y(n) )*(sqrt(2*abs( -y(n) ))-(1/k2));
-    <span class="keyword">end</span>
+    <span class="comment">%Calculo dos k's</span>
+    k1 = 1/yl(n);
+    k2 = sqrt(2*k1);
+
+    <span class="comment">%Subsys por ramos com entrada de -y</span>
+    idx = find(abs(Y) &lt;= yl(n));
+    U(idx) = (k1/k2)*-Y(idx);
+
+    idx = find(abs(Y) &gt; yl(n));
+    U(idx) = sign( -Y(idx) ).*(sqrt(2.*abs( -Y(idx) ))-(1/k2));
+
+    <span class="comment">%Subtrac&ccedil;&atilde;o de dy</span>
+    U = U - dY;
+
+    <span class="comment">%Aplica&ccedil;&atilde;o do ganho k2</span>
+    U = U * k2;
+
+    <span class="comment">%Filtro de satura&ccedil;&atilde;o</span>
+    U(U &gt; 1) = 1;
+    U(U &lt; -1) = -1;
+
+    figure;
+    surf(y, dy, U);
+    view(70, 40);
+    grid <span class="string">on</span>;
+    title(sprintf(<span class="string">'Varia&ccedil;&atilde;o do Sinal de Controlo (u) para y_l=%.1f'</span>, yl(n)));
+    xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+    ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+    zlabel(<span class="string">'Sinal de Controlo (u)'</span>);
 <span class="keyword">end</span>
-
-<span class="comment">%Subtrac&ccedil;&atilde;o de dy</span>
-u = u - dy;
-
-<span class="comment">%Aplica&ccedil;&atilde;o do ganho k2</span>
-u = u * k2;
-
-<span class="comment">%Filtro de satura&ccedil;&atilde;o</span>
-u(u &gt; 1) = 1;
-u(u &lt; -1) = -1;
-
-surf(y, dy, u);
-</pre><pre class="codeoutput error">Error using surf (line 71)
-Z must be a matrix, not a scalar or vector.
-
-Error in e_10 (line 42)
-surf(y, dy, u);
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="e_10_01.png" alt=""> <img vspace="5" hspace="5" src="e_10_02.png" alt=""> <img vspace="5" hspace="5" src="e_10_03.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Pela an&aacute;lise do diagrama de blocos da Fig.5 do relat&oacute;rio verificou-se que o sistema consistia do Subsys dado pela equa&ccedil;&atilde;o de dois ramos:</p><p><img src="e_10_eq03996353852744597969.png" alt="$u(y, \dot{y}) =  \frac{k1}{k2}*x$">, <img src="e_10_eq17659634161994509827.png" alt="$|x| \leq y_l$"></p><p><img src="e_10_eq04860203783997631681.png" alt="$u(y, \dot{y}) =  sgn(x)[\sqrt(2|x|)-\frac{1}{k2}]$">, <img src="e_10_eq00909539929709463855.png" alt="$|x| &gt; y_l$"></p><p>Alimentado pela subtra&ccedil;&atilde;o entre o sinal de Refer&ecirc;ncia e y que neste caso &eacute; dado por:</p><p><img src="e_10_eq01451123224050065148.png" alt="$x = Ref-y = 0 - y = -y$"></p><p>De seguida &agrave; sa&iacute;da do Subsys &eacute; subtra&iacute;do <img src="e_10_eq03663895960638956487.png" alt="$\dot{y}$"> gerando um sinal ao &eacute; aplicado um ganho k2 que por sua vez &eacute; filtrado limitando os valores superiores a 1 e inferiores a -1.</p><p>Este sistema tem um princ&iacute;pio de funcionamento semelhante ao da quest&atilde;o anterior diferindo nos pontos dentro do intervalo de yl no qual a derivada da fun&ccedil;&atilde;o do Subsys n&atilde;o tende para infinito, ou seja, n&atilde;o existe a mesma discrepancia entre valores perto da origem, logo em vez da cabe&ccedil;a do disco oscilar constantemente &agrave; volta da orgirem (caso da Fig.1) temos uma desacelara&ccedil;&atilde;o mais suave &agrave; medida que se aproxima do valor de refer&ecirc;ncia evitando assim o comportamento de chattering. Tamb&eacute;m podemos concluir da Fig.2 e Fig.3 que quanto maior for esse intervalo, yl, mais sauve &eacute; a desacelara&ccedil;&atilde;o. Por isso deve se escolher yl de maneira a n&atilde;o prejudicar muito o tempo que a cabe&ccedil;a leva a chegar a posi&ccedil;&atilde;o de refer&ecirc;ncia, ou seja, o mais pequeno poss&iacute;vel que evite o comportamento de chattering.</p><p>Este &eacute; um melhor sistema que o anterior.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-% <html><h3>Exercício 10</h3></html>
+%% Exercício 10
 %Reset do ambiente de trabalho
 clear;
 close all;
 
-%Tempo da simulação
-ttotal = 10;
+%Valores do intervalo +-yl no qual a comutação se torna linear para testar
+yl = [0, 0.2, 0.4];
 
-%Escolha do intervalo +-yl no qual a comutação se torna linear
-yl = 0.4;
-
-%Vector de posições e velocidades para testar o controlador modificado
+%Vector de posições e velocidades para criar meshgrid de teste do
+%controlador
 y = linspace (-2, 2);
 dy = linspace (-2, 2);
 
-%Inicialização de u com zeros em todos os indexes
-u = zeros(size(y));
+[Y, dY] = meshgrid(y, dy);
 
-%Calculo dos k's
-k1 = 1/yl;
-k2 = sqrt(2*k1);
+for n = 1:length(yl)
+    %Inicialização de u com zeros em todos os indexes
+    U = zeros(size(Y));
 
-%Subsys por ramos com entrada de -y
-for n = 1:length(y)
-    if abs(y(n)) <= yl
-        u(n) = (k1/k2)*-y(n);
-    else
-        u(n) = sign( -y(n) )*(sqrt(2*abs( -y(n) ))-(1/k2));
-    end
+    %Calculo dos k's
+    k1 = 1/yl(n);
+    k2 = sqrt(2*k1);
+
+    %Subsys por ramos com entrada de -y
+    idx = find(abs(Y) <= yl(n));
+    U(idx) = (k1/k2)*-Y(idx);
+
+    idx = find(abs(Y) > yl(n));
+    U(idx) = sign( -Y(idx) ).*(sqrt(2.*abs( -Y(idx) ))-(1/k2));
+
+    %Subtracção de dy
+    U = U - dY;
+
+    %Aplicação do ganho k2
+    U = U * k2;
+
+    %Filtro de saturação
+    U(U > 1) = 1;
+    U(U < -1) = -1;
+
+    figure;
+    surf(y, dy, U);
+    view(70, 40);
+    grid on;
+    title(sprintf('Variação do Sinal de Controlo (u) para y_l=%.1f', yl(n)));
+    xlabel('Posição (y)');
+    ylabel('Velocidade ($\dot{y}$)', 'Interpreter', 'latex');
+    zlabel('Sinal de Controlo (u)');
 end
 
-%Subtracção de dy
-u = u - dy;
-
-%Aplicação do ganho k2
-u = u * k2;
-
-%Filtro de saturação
-u(u > 1) = 1;
-u(u < -1) = -1;
-
-surf(y, dy, u);
+%%
+% *Comentários:* 
+% 
+% Pela análise do diagrama de blocos da Fig.5 do relatório
+% verificou-se que o sistema consistia do Subsys dado pela equação de dois
+% ramos:
+%
+% $u(y, \dot{y}) =  \frac{k1}{k2}*x$, $|x| \leq y_l$
+%
+% $u(y, \dot{y}) =  sgn(x)[\sqrt(2|x|)-\frac{1}{k2}]$, $|x| > y_l$
+%
+% Alimentado pela subtração entre o sinal de Referência e y que neste caso
+% é dado por:
+%
+% $x = Ref-y = 0 - y = -y$
+%
+% De seguida à saída do Subsys é subtraído $\dot{y}$ gerando um sinal ao é
+% aplicado um ganho k2 que por sua vez é filtrado limitando os valores
+% superiores a 1 e inferiores a -1.
+% 
+% Este sistema tem um princípio de funcionamento semelhante ao da questão
+% anterior diferindo nos pontos dentro do intervalo de yl no qual a
+% derivada da função do Subsys não tende para infinito, ou seja, não existe
+% a mesma discrepancia entre valores perto da origem, logo em vez da cabeça 
+% do disco oscilar constantemente à volta da orgirem (caso da Fig.1) temos uma
+% desacelaração mais suave à medida que se aproxima do valor de referência 
+% evitando assim o comportamento de chattering. Também podemos concluir da
+% Fig.2 e Fig.3 que quanto maior for esse intervalo, yl, mais sauve é a
+% desacelaração. Por isso deve se escolher yl de maneira a não prejudicar
+% muito o tempo que a cabeça leva a chegar a posição de referência, ou
+% seja, o mais pequeno possível que evite o comportamento de chattering.
+%
+% Este é um melhor sistema que o anterior.
 ##### SOURCE END #####
 --></body></html>
