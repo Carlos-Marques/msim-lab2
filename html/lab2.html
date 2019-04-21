@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>lab2</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-18"><meta name="DC.source" content="lab2.m"><style type="text/css">
+      --><title>Modela&ccedil;&atilde;o e Simula&ccedil;&atilde;o - Laborat&oacute;rio 2</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-22"><meta name="DC.source" content="lab2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,361 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Exerc&iacute;cio 10</a></li><li><a href="#3">Exerc&iacute;cio 11</a></li><li><a href="#7">Exerc&iacute;cio 12</a></li><li><a href="#9">Exerc&iacute;cio 13</a></li></ul></div><h2 id="1">Exerc&iacute;cio 10</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+  </style></head><body><div class="content"><h1>Modela&ccedil;&atilde;o e Simula&ccedil;&atilde;o - Laborat&oacute;rio 2</h1><!--introduction--><p>Carlos Silva - 81323</p><p>Ricardo Espadinha - 84178</p><p>Grupo 33 - Segunda-feira, 10:00h LSDC1</p><p>2018/2019 - 2&ordm; Semestre</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Exerc&iacute;cio 2 - Teste da Gera&ccedil;&atilde;o do Impulso Prot&oacute;tipo</a></li><li><a href="#3">Exerc&iacute;cio 3 - Teste da Gera&ccedil;&atilde;o do Sinal u(t)</a></li><li><a href="#5">Exerc&iacute;cio 7 - Simula&ccedil;&atilde;o do Sistema para diversos valores de alpha e beta</a></li><li><a href="#9">Exerc&iacute;cio 8 - Representa&ccedil;&atilde;o da fun&ccedil;&atilde;o de gera&ccedil;&atilde;o da entrada u(y, dy)</a></li><li><a href="#11">Exerc&iacute;cio 9</a></li><li><a href="#13">Exerc&iacute;cio 10</a></li><li><a href="#15">Exerc&iacute;cio 11</a></li><li><a href="#19">Exerc&iacute;cio 12</a></li><li><a href="#21">Exerc&iacute;cio 13</a></li></ul></div><h2 id="1">Exerc&iacute;cio 2 - Teste da Gera&ccedil;&atilde;o do Impulso Prot&oacute;tipo</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+clear;
+close <span class="string">all</span>;
+
+testebeta = [0.2 0.6 1];
+testetempo = linspace(-1,1, 1000);
+
+<span class="keyword">for</span> i=1:length(testebeta)
+    pb = ImpulsoPrototipo(testetempo, testebeta(i));
+
+    plot(testetempo, pb, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'\\beta=%.1f'</span>, testebeta(i)));
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+
+legend(<span class="string">'Location'</span>,<span class="string">'northeastoutside'</span>);
+
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Impulso Prot&oacute;tipo'</span>)
+title(sprintf(<span class="string">'Fig.1 - Fun&ccedil;&atilde;o de Gera&ccedil;&atilde;o do Impulso Prot&oacute;tipo p_\\beta(t)'</span>));
+</pre><img vspace="5" hspace="5" src="lab2_01.png" alt=""> <p><b>Coment&aacute;rios:</b> Verifica-se que quanto maior for o valor de beta, menor &eacute; o tempo que o sinal permanece a 1 (&aacute;rea total do tri&acirc;ngulo). Analisando, por exemplo, o caso em que <img src="lab2_eq07813526719646221217.png" alt="$\beta=1$">, numa convolu&ccedil;&atilde;o entre o sinal triangular e rectangular descritos no enunciado, o sinal triangular apenas se encontra todo "coberto" pelo rectangular num instante (t=0). Aplicando a l&oacute;gica inversa, no sinal em que <img src="lab2_eq00079473041373237715.png" alt="$\beta=0.2$">, o impulso gerado aproxima-se mais do rectangular.</p><h2 id="3">Exerc&iacute;cio 3 - Teste da Gera&ccedil;&atilde;o do Sinal u(t)</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+ clear;
+ close <span class="string">all</span>;
+
+ T = 6;
+
+<span class="comment">%Fixar beta=1 (Impulso Prot&oacute;tipo aproximadamente tri&acirc;ngular) para observar o efeito de alfa</span>
+beta = 1;
+U1 = -1;
+U2 = 1;
+n1 = 1000;
+n2 = 1000;
+
+testealpha = [0.5 1 2];
+
+<span class="keyword">for</span> i=1:length(testealpha)
+
+
+    [u, ut] = sinalu(T, testealpha(i), beta, U1, U2, n1, n2);
+
+    plot(ut, u, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'\\alpha=%.1f'</span>, testealpha(i)));
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+
+legend(<span class="string">'Location'</span>,<span class="string">'northeastoutside'</span>);
+
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo u(t)'</span>)
+title(sprintf(<span class="string">'Fig.2 - Sinal de Controlo u(t) a partir de p_\\beta(t) (\\beta=1)'</span>));
+</pre><img vspace="5" hspace="5" src="lab2_02.png" alt=""> <p><b>Coment&aacute;rios:</b> Como podemos observar, a fun&ccedil;&atilde;o gera u(t) atrav&eacute;s do Impulso Prot&oacute;tipo. Fixaram-se todos os valores &agrave; excep&ccedil;&atilde;o do alpha, de modo a ver o impacto deste. Verifica-se o esperado, tendo em conta a rela&ccedil;&atilde;o entre T1 e T2. Por exemplo, para alpha=1 =&gt; T1=T2.</p><h2 id="5">Exerc&iacute;cio 7 - Simula&ccedil;&atilde;o do Sistema para diversos valores de alpha e beta</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+ clear;
+ close <span class="string">all</span>;
+
+<span class="comment">%Condi&ccedil;&otilde;es Iniciais</span>
+y0 = 1;
+dy0 = 0;
+n1 = 100;
+n2 = 100;
+
+<span class="comment">%Testes iniciais para b=0 (Sistema n&atilde;o Perturbado)</span>
+b = 0;
+
+<span class="comment">%Testes fixando alpha=1 e variando beta=0.1 / beta=0.5 / beta=1</span>
+alpha = 1; <span class="comment">%T minimo</span>
+beta = [0.1 0.5 1];
+
+ydy_a = figure;
+planoFase_a = figure;
+sinaisU_a = figure;
+
+<span class="keyword">for</span> i=1:length(beta)
+
+    <span class="comment">%Fun&ccedil;&atilde;o que calcula U1, U2 e T de acordo com as condi&ccedil;&otilde;es que se</span>
+    <span class="comment">%concluiram pela an&aacute;lise te&oacute;rica</span>
+    [U1, U2, T] = GetUsT(alpha, beta(i));
+
+    <span class="comment">%Gerar sinal u(t) e correr a simula&ccedil;&atilde;o</span>
+    [u, ut] = sinalu(T, alpha, beta(i), U1, U2, n1, n2);
+    u_t = [ut', u'];
+    sim(<span class="string">'Q7'</span>);
+
+    figure(sinaisU_a);
+    plot(ut, u, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'\\beta=%.1f'</span>, beta(i)));
+    hold <span class="string">on</span>;
+
+    figure(ydy_a);
+    plot(tout, dy, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'dy, \\beta=%.1f'</span>, beta(i)));
+    hold <span class="string">on</span>;
+    plot(tout, y,<span class="string">'DisplayName'</span>, sprintf(<span class="string">'y, \\beta=%.1f'</span>, beta(i)));
+
+    figure(planoFase_a);
+    plot(y, dy, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'\\beta=%.1f'</span>, beta(i)));
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+
+<span class="comment">%Informa&ccedil;&atilde;o de cada plot</span>
+figure(sinaisU_a);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo u(t)'</span>)
+title(sprintf(<span class="string">'Fig.3 - Sinais de Controlo u(t) para \\alpha=1'</span>));
+
+figure(ydy_a);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'y e dy'</span>)
+title(sprintf(<span class="string">'Fig.4 - Posi&ccedil;&atilde;o e Velocidade da Cabe&ccedil;a Magn&eacute;tica para \\alpha=1'</span>));
+
+figure(planoFase_a);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'y'</span>);
+ylabel(<span class="string">'dy'</span>)
+title(sprintf(<span class="string">'Fig.5 - Plano de Fase para \\alpha=1'</span>));
+</pre><img vspace="5" hspace="5" src="lab2_03.png" alt=""> <img vspace="5" hspace="5" src="lab2_04.png" alt=""> <img vspace="5" hspace="5" src="lab2_05.png" alt=""> <p><b>Coment&aacute;rios:</b> Verifica-se que o valor de <img src="lab2_eq17331442575217596290.png" alt="$\beta$"> tem influencia em T (maior <img src="lab2_eq17331442575217596290.png" alt="$\beta$"> leva a um maior T).Isto &eacute; de esperar pela forma como &eacute; gerado o impulso Prototipo. Da mesmo forma, tamb&eacute;m &eacute; possivel observar que, para valores muito pequenos de <img src="lab2_eq17331442575217596290.png" alt="$\beta$">, u(t) aproxima-se de um sinal rect&acirc;ngular e que, pela l&oacute;gica contr&aacute;ria. para valores de <img src="lab2_eq17331442575217596290.png" alt="$\beta$"> muito pr&oacute;ximos de 1, u(t) aproxima-se de um sinal tri&acirc;ngular. Em rela&ccedil;&atilde;o &agrave; Posi&ccedil;&atilde;o e Velocidade da Cabe&ccedil;a, pode-se verificar que para todos os casos, o sistema possui os valores finais desejados, no entanto demora mais tempo a atingir os mesmos quanto maior for o valor de <img src="lab2_eq17331442575217596290.png" alt="$\beta$">.</p><pre class="codeinput"><span class="comment">%Testes fixando beta=0.2 e variando alpha=1 / alpha=2 / alpha=4</span>
+beta = 0.1; <span class="comment">%u(t) aproximandamente rect&acirc;ngular</span>
+alpha = [0.7 1 2];
+
+ydy_b = figure;
+planoFase_b = figure;
+sinaisU_b = figure;
+
+
+<span class="keyword">for</span> i=1:length(alpha)
+
+    <span class="comment">%Fun&ccedil;&atilde;o que calcula U1, U2 e T de acordo com as condi&ccedil;&otilde;es que se</span>
+    <span class="comment">%concluiram pela an&aacute;lise te&oacute;rica</span>
+    [U1, U2, T] = GetUsT(alpha(i), beta);
+
+    <span class="comment">%Gerar sinal u(t) e correr a simula&ccedil;&atilde;o</span>
+    [u, ut] = sinalu(T, alpha(i), beta, U1, U2, n1, n2);
+    u_t = [ut', u'];
+    sim(<span class="string">'Q7'</span>);
+
+    figure(sinaisU_b);
+    plot(ut, u, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'\\alpha=%.1f'</span>, alpha(i)));
+    hold <span class="string">on</span>;
+
+    figure(ydy_b);
+    plot(tout, dy, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'dy, \\alpha=%.1f'</span>, alpha(i)));
+    hold <span class="string">on</span>;
+    plot(tout, y,<span class="string">'DisplayName'</span>, sprintf(<span class="string">'y, \\alpha=%.1f'</span>, alpha(i)));
+
+    figure(planoFase_b);
+    plot(y, dy, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'\\alpha=%.1f'</span>, alpha(i)));
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+
+<span class="comment">%Informa&ccedil;&atilde;o de cada plot</span>
+figure(sinaisU_b);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo u(t)'</span>)
+title(sprintf(<span class="string">'Fig.6 - Sinais de Controlo u(t) para \\beta=0.2'</span>));
+
+figure(ydy_b);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'y e dy'</span>)
+title(sprintf(<span class="string">'Fig.7 - Posi&ccedil;&atilde;o e Velocidade da Cabe&ccedil;a Magn&eacute;tica para \\beta=0.2'</span>));
+
+figure(planoFase_b);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'y'</span>);
+ylabel(<span class="string">'dy'</span>)
+title(sprintf(<span class="string">'Fig.8 - Plano de Fase para \\beta=0.2'</span>));
+</pre><img vspace="5" hspace="5" src="lab2_06.png" alt=""> <img vspace="5" hspace="5" src="lab2_07.png" alt=""> <img vspace="5" hspace="5" src="lab2_08.png" alt=""> <p><b>Coment&aacute;rios:</b> Fixou-se <img src="lab2_eq00079473041373237715.png" alt="$\beta=0.2$"> de forma a que u(t) fosse, aproximadamente, um conjunto de dois sinais rect&acirc;ngulares, como se pode verificar. Ainda no sinal de controlo, pode-se verificar que o <img src="lab2_eq14221827199139923399.png" alt="$\alpha$"> possui dois tipos de influencias distintas no sinal: Para valores de <img src="lab2_eq03064897441495855506.png" alt="$\alpha<1$"> T1&gt;T2 e para valores de <img src="lab2_eq08959333113985291603.png" alt="$\alpha&gt;1$"> T1&lt;T2; O valor de T &eacute; minimo para <img src="lab2_eq01505123926026738633.png" alt="$\alpha=1$">, como comprovado na parte te&oacute;rica. Em rela&ccedil;&atilde;o &agrave; Posi&ccedil;&atilde;o e Velocidade da Cabe&ccedil;a, pode-se verificar que para todos os casos, o sistema possui os valores finais desejados, no entanto demora menos tempo a atingir os mesmos para <img src="lab2_eq01505123926026738633.png" alt="$\alpha=1$">.</p><pre class="codeinput"><span class="comment">%Compara&ccedil;&atilde;o com uma ves&atilde;o perturbada do sistema (b=0 e b=0.025)</span>
+
+perturbacao = [0 0.025];
+
+<span class="comment">%Testes fixando alpha=1 e variando beta=0.1 / beta=0.5 / beta=1</span>
+alpha = 1; <span class="comment">%T minimo</span>
+beta = 0.1; <span class="comment">%u(t) aproximadamente rect&acirc;ngular</span>
+
+ydy_pert = figure;
+planoFase_pert = figure;
+sinaisU_pert = figure;
+
+<span class="comment">%Fun&ccedil;&atilde;o que calcula U1, U2 e T de acordo com as condi&ccedil;&otilde;es que se</span>
+<span class="comment">%concluiram pela an&aacute;lise te&oacute;rica</span>
+[U1, U2, T] = GetUsT(alpha, beta);
+
+<span class="comment">%Gerar u(t)</span>
+[u, ut] = sinalu(T, alpha, beta, U1, U2, n1, n2);
+u_t = [ut', u'];
+plot(ut, u);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo u(t)'</span>);
+title(sprintf(<span class="string">'Fig.9 - Sinal de Controlo u(t) para \\alpha=1 e \\beta=0.1'</span>));
+
+<span class="keyword">for</span> i=1:length(perturbacao)
+
+    b = perturbacao(i);
+
+    <span class="comment">%Correr Simula&ccedil;&atilde;o</span>
+    sim(<span class="string">'Q7'</span>);
+    hold <span class="string">on</span>;
+
+    figure(ydy_pert);
+    plot(tout, dy, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'dy, b=%.3f'</span>, b));
+    hold <span class="string">on</span>;
+    plot(tout, y,<span class="string">'DisplayName'</span>, sprintf(<span class="string">'y, b=%.3f'</span>, b));
+
+    figure(planoFase_pert);
+    plot(y, dy, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'b=%.3f'</span>, b));
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+
+<span class="comment">%Desenhar uma linha para y, dy = 0.025</span>
+figure(ydy_pert);
+plot(tout,0.025*ones(size(tout)), <span class="string">'DisplayName'</span>, <span class="string">'y, dy = 0.025'</span>);
+
+<span class="comment">%Informa&ccedil;&atilde;o de cada plot</span>
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'y e dy'</span>);
+title(sprintf(<span class="string">'Fig.10 - Posi&ccedil;&atilde;o e Velocidade da Cabe&ccedil;a Magn&eacute;tica para b=0 e b=0.025'</span>));
+
+figure(planoFase_pert);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'y'</span>);
+ylabel(<span class="string">'dy'</span>);
+title(sprintf(<span class="string">'Fig.11 - Plano de Fase para b=0 e b=0.025'</span>));
+</pre><img vspace="5" hspace="5" src="lab2_09.png" alt=""> <img vspace="5" hspace="5" src="lab2_10.png" alt=""> <img vspace="5" hspace="5" src="lab2_11.png" alt=""> <p><b>Coment&aacute;rios:</b> De acordo com os resultados anteriores, fixou-se <img src="lab2_eq01505123926026738633.png" alt="$\alpha=1$"> (para que T fosse m&iacute;nimo) e <img src="lab2_eq02417156135643290836.png" alt="$\beta=0.1$"> (para que u(t) se aproxime de um conjunto de dois sinais rect&acirc;ngulares). Assim, obteve-se o u(t) discrito anteriormente e, de forma a observar a influencia da perturba&ccedil;&atilde;o b, simulou-se esse sistema para b=0 (s/ perturba&ccedil;&atilde;o) e para b=0.0250 (c/ perturba&ccedil;&atilde;o). Assim, observa-se que existe uma perturba&ccedil;&atilde;o no valor final da Posi&ccedil;&atilde;o e da Velocidade em rela&ccedil;&atilde;o a valor desejado (0), correspondente a b.</p><p>Tamb&eacute;m &eacute; importante de notar que, para todos os casos observados, verifica-se a condi&ccedil;&atilde;o das amplitudes serem sempre &lt;=1.</p><h2 id="9">Exerc&iacute;cio 8 - Representa&ccedil;&atilde;o da fun&ccedil;&atilde;o de gera&ccedil;&atilde;o da entrada u(y, dy)</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+ clear;
+ close <span class="string">all</span>;
+
+
+<span class="comment">%Vector de posi&ccedil;&otilde;es e velocidades para criar meshgrid de teste do</span>
+<span class="comment">%controlador</span>
+y = linspace (-2, 2);
+dy = linspace (-2, 2);
+
+[Y, dY] = meshgrid(y, dy);
+
+<span class="comment">%=== Regi&atilde;o tracejada do Diagrama de Blocos ===</span>
+<span class="comment">%s1: Sinal que entra no bloco subsys</span>
+s1 = 0 - Y;
+
+<span class="comment">%s2: Sinal que sai do bloco subsys</span>
+s2 = sign(s1).*sqrt(2*abs(s1));
+
+<span class="comment">%s3: Sinal que entra no bloco sign, composto por s2 e -dY</span>
+s3 = s2 - dY;
+
+<span class="comment">%U: Sinal que sai da regi&atilde;o tracejada</span>
+U = sign(s3);
+<span class="comment">%==============================================</span>
+
+figure;
+surf(Y, dY, U);
+view(45, 45);
+grid <span class="string">on</span>;
+title(<span class="string">'Fig.12 - u(y, $\dot{y}$)'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+zlabel(<span class="string">'Sinal de Controlo (u)'</span>);
+title(<span class="string">'\textbf{Fig.13 - Fun\c{c}\~ao de gera\c{c}\~ao da entrada u(y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+
+figure;
+contour(Y, dY, U);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'y'</span>);
+ylabel(<span class="string">'$\dot y$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'LaTex'</span>)
+zlabel(<span class="string">'u'</span>);
+title(<span class="string">'Fig.14 - Curva de Comuta&ccedil;&atilde;o'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_12.png" alt=""> <img vspace="5" hspace="5" src="lab2_13.png" alt=""> <p>Foi calculado que U = sign( ((sign(-Y))*(sqrt(2*abs(-Y)))) - dY). &Eacute; de notar que, de forma a que a multiplica&ccedil;&atilde;o das matrizes seja feita elemento a elemento, em vez da multiplica&ccedil;&atilde;o normal de matrizes, &eacute; necess&aacute;rio colocar um '.' antes do '*'.</p><p>Este novo sistema em cadeia fechada, comporta-se de maneira diferente do anterior (em malha aberta): Este sistema, procura ajustar a sua posi&ccedil;&atilde;o dinamicamente atrav&eacute;s da altera&ccedil;&atilde;o de valores da velocidade. Esta rela&ccedil;&atilde;o &eacute; conseguida atrav&eacute;s de trajet&oacute;rias parab&oacute;licas que, dependendo do valor do impulso numa dada posi&ccedil;&atilde;o, tendem para + ou - infinito, de forma a tentar sempre aproximar-se da posi&ccedil;&atilde;o de equil&iacute;brio. Isto consegue-se verificar bastante bem atrav&eacute;s da Curva de Comuta&ccedil;&atilde;o representada.</p><h2 id="11">Exerc&iacute;cio 9</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+ clear;
+ close <span class="string">all</span>;
+
+ <span class="comment">%Simula&ccedil;&atilde;o do sistema em malha aberta para impulsos aproximadamente rectangulares</span>
+
+ beta = 0.1;   <span class="comment">%Impulso aproximadamente rect&acirc;ngular</span>
+ alpha = 1;  <span class="comment">%T minimo</span>
+ b = 0;
+ n1 = 100;
+ n2 = 100;
+ y0 = 1;
+ dy0 = 0;
+
+ [U1, U2, T] = GetUsT(alpha, beta);
+
+ [u, ut] = sinalu(T, alpha, beta, U1, U2, n1, n2);
+ u_t = [ut', u'];
+ sim(<span class="string">'Q7'</span>);
+
+ pos = figure;
+ vel = figure;
+ fase = figure;
+ Us = figure;
+
+figure(pos);
+plot(tout, y, <span class="string">'DisplayName'</span>, <span class="string">'Malha Aberta'</span>);
+title(<span class="string">'Fig.15 - Posi&ccedil;&atilde;o da Cabe&ccedil;a Magn&eacute;tica'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'y'</span>);
+hold <span class="string">on</span>;
+
+figure(vel);
+plot(tout, dy, <span class="string">'DisplayName'</span>, <span class="string">'Malha Aberta'</span>);
+title(<span class="string">'Fig.16 - Velocidadeo da Cabe&ccedil;a Magn&eacute;tica'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'dy'</span>);
+hold <span class="string">on</span>;
+
+figure(fase);
+plot(y, dy, <span class="string">'DisplayName'</span>, <span class="string">'Malha Aberta'</span>);
+title(<span class="string">'Fig.17 - Plano de Fase'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Posi&ccedil;&atilde;o'</span>);
+ylabel(<span class="string">'Velocidade'</span>);
+hold <span class="string">on</span>;
+
+figure(Us);
+plot(ut, u, <span class="string">'DisplayName'</span>, <span class="string">'Malha Aberta'</span>);
+title(<span class="string">'Fig.18 - Sinal de Controlo u(t)'</span>);
+grid <span class="string">on</span>;
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'u'</span>);
+hold <span class="string">on</span>;
+
+<span class="comment">%Simula&ccedil;&atilde;o em malha fechada</span>
+t_paragem = 7;
+y0 = 1;
+dy0 = 0;
+
+sim(<span class="string">'Q9'</span>);
+
+figure(pos);
+plot(tout, y, <span class="string">'DisplayName'</span>, <span class="string">'Malha Fechada'</span>);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+
+figure(vel);
+plot(tout, dy, <span class="string">'DisplayName'</span>, <span class="string">'Malha Fechada'</span>);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+
+figure(fase);
+plot(y, dy, <span class="string">'DisplayName'</span>, <span class="string">'Malha Fechada'</span>);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+
+figure(Us);
+plot(tout, u, <span class="string">'DisplayName'</span>, <span class="string">'Malha Fechada'</span>);
+legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_14.png" alt=""> <img vspace="5" hspace="5" src="lab2_15.png" alt=""> <img vspace="5" hspace="5" src="lab2_16.png" alt=""> <img vspace="5" hspace="5" src="lab2_17.png" alt=""> <p><b>Coment&aacute;rio:</b></p><p>Observa-se que o sistema comporta-se de forma semelhante aos anteriores, tendendo  para 0. No entanto, neste caso, o sistema nunca ficar&aacute; est&aacute;vel neste ponto de equil&iacute;brio, oscilando entre valores pr&oacute;ximos deste, no caso da Posi&ccedil;&atilde;o e Velocidade, ou encurvando em torno de (0, 0) , no caso do Plano de Fase. Tamb&eacute;m se verifica uma altera&ccedil;&atilde;o (com uma frequ&ecirc;ncia cada vez maior) entre o m&aacute;ximo e o m&iacute;nimo (1 e -1).</p><p>Isto &eacute; explicado, pelo facto de que na origem a derivada &eacute; infinita, ou seja, o sistema n&atilde;o consegue atingir o valor de referencia, oscilando &agrave; volta do mesmo. Este comportamento &eacute; o chamado chattering. Logicamente, que isto &eacute; problem&aacute;tico, pois o facto do sistema nunca ficar est&aacute;vel, significa fisicamente que a cabe&ccedil;a nunca para, resultando numa leitura incorreta dos dados no disco,  consumindo energia e componentes indefinidamente.</p><h2 id="13">Exerc&iacute;cio 10</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
 
@@ -80,8 +434,8 @@ dy = linspace (-2, 2);
 
 [Y, dY] = meshgrid(y, dy);
 
-<span class="comment">%Figure counter para o for</span>
-fn = 0;
+<span class="comment">%Figure counter</span>
+fc = 0;
 
 <span class="keyword">for</span> n = 1:length(yl)
     <span class="comment">%Inicializa&ccedil;&atilde;o de u com zeros em todos os indexes</span>
@@ -109,16 +463,16 @@ fn = 0;
     U(U &lt; -1) = -1;
 
     figure;
-    fn = fn+1;
+    fc = fc + 1;
     surf(y, dy, U);
     view(70, 40);
     grid <span class="string">on</span>;
-    title(sprintf(<span class="string">'Fig.%d - Varia&ccedil;&atilde;o do Sinal de Controlo (u) para y_l=%.1f'</span>, fn, yl(n)));
+    title(sprintf(<span class="string">'Fig.%d - Varia&ccedil;&atilde;o do Sinal de Controlo (u) para y_l=%.1f'</span>, 18+fc, yl(n)));
     xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
     ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
     zlabel(<span class="string">'Sinal de Controlo (u)'</span>);
 <span class="keyword">end</span>
-</pre><img vspace="5" hspace="5" src="lab2_01.png" alt=""> <img vspace="5" hspace="5" src="lab2_02.png" alt=""> <img vspace="5" hspace="5" src="lab2_03.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Pela an&aacute;lise do diagrama de blocos da Fig.5 do relat&oacute;rio verificou-se que o sistema consistia do Subsys dado pela equa&ccedil;&atilde;o de dois ramos:</p><p><img src="lab2_eq03996353852744597969.png" alt="$u(y, \dot{y}) =  \frac{k1}{k2}*x$">, <img src="lab2_eq17659634161994509827.png" alt="$|x| \leq y_l$"></p><p><img src="lab2_eq04860203783997631681.png" alt="$u(y, \dot{y}) =  sgn(x)[\sqrt(2|x|)-\frac{1}{k2}]$">, <img src="lab2_eq00909539929709463855.png" alt="$|x| &gt; y_l$"></p><p>Alimentado pela subtra&ccedil;&atilde;o entre o sinal de Refer&ecirc;ncia e y que neste caso &eacute; dado por:</p><p><img src="lab2_eq01451123224050065148.png" alt="$x = Ref-y = 0 - y = -y$"></p><p>De seguida &agrave; sa&iacute;da do Subsys &eacute; subtra&iacute;do <img src="lab2_eq03663895960638956487.png" alt="$\dot{y}$"> gerando um sinal ao &eacute; aplicado um ganho k2 que por sua vez &eacute; filtrado limitando os valores superiores a 1 e inferiores a -1.</p><p>Este sistema tem um princ&iacute;pio de funcionamento semelhante ao da quest&atilde;o anterior diferindo nos pontos dentro do intervalo de yl no qual a derivada da fun&ccedil;&atilde;o do Subsys n&atilde;o tende para infinito, ou seja, n&atilde;o existe a mesma discrepancia entre valores perto da origem, logo em vez da cabe&ccedil;a disco oscilar constantemente &agrave; volta da orgirem (caso da Fig.1) temos uma desacelara&ccedil;&atilde;o mais suave &agrave; medida que se aproxima do valor de refer&ecirc;ncia evitando assim o comportamento de chattering. Tamb&eacute;m podemos concluir da Fig.2 e Fig.3 que quanto maior for esse intervalo, yl, mais sauve &eacute; a desacelara&ccedil;&atilde;o. Por isso deve se escolher yl de maneira a n&atilde;o prejudicar muito o tempo que a cabe&ccedil;a leva a chegar a posi&ccedil;&atilde;o de refer&ecirc;ncia.</p><h2 id="3">Exerc&iacute;cio 11</h2><p><h3>Controlador completo</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+</pre><img vspace="5" hspace="5" src="lab2_18.png" alt=""> <img vspace="5" hspace="5" src="lab2_19.png" alt=""> <img vspace="5" hspace="5" src="lab2_20.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Pela an&aacute;lise do diagrama de blocos da Fig.5 do relat&oacute;rio verificou-se que o sistema consistia do Subsys dado pela equa&ccedil;&atilde;o de dois ramos:</p><p><img src="lab2_eq03996353852744597969.png" alt="$u(y, \dot{y}) =  \frac{k1}{k2}*x$">, <img src="lab2_eq17659634161994509827.png" alt="$|x| \leq y_l$"></p><p><img src="lab2_eq04860203783997631681.png" alt="$u(y, \dot{y}) =  sgn(x)[\sqrt(2|x|)-\frac{1}{k2}]$">, <img src="lab2_eq00909539929709463855.png" alt="$|x| &gt; y_l$"></p><p>Alimentado pela subtra&ccedil;&atilde;o entre o sinal de Refer&ecirc;ncia e y que neste caso &eacute; dado por:</p><p><img src="lab2_eq01451123224050065148.png" alt="$x = Ref-y = 0 - y = -y$"></p><p>De seguida &agrave; sa&iacute;da do Subsys &eacute; subtra&iacute;do <img src="lab2_eq03663895960638956487.png" alt="$\dot{y}$"> gerando um sinal ao &eacute; aplicado um ganho k2 que por sua vez &eacute; filtrado limitando os valores superiores a 1 e inferiores a -1.</p><p>Este sistema tem um princ&iacute;pio de funcionamento semelhante ao da quest&atilde;o anterior diferindo nos pontos dentro do intervalo de yl no qual a derivada da fun&ccedil;&atilde;o do Subsys n&atilde;o tende para infinito, ou seja, n&atilde;o existe a mesma discrepancia entre valores perto da origem, logo em vez da cabe&ccedil;a do disco oscilar constantemente &agrave; volta da orgirem (caso da Fig.19) temos uma desacelara&ccedil;&atilde;o mais suave &agrave; medida que se aproxima do valor de refer&ecirc;ncia evitando assim o comportamento de chattering. Tamb&eacute;m podemos concluir da Fig.20 e Fig.21 que quanto maior for esse intervalo, yl, mais sauve &eacute; a desacelara&ccedil;&atilde;o. Por isso deve se escolher yl de maneira a n&atilde;o prejudicar muito o tempo que a cabe&ccedil;a leva a chegar a posi&ccedil;&atilde;o de refer&ecirc;ncia, ou seja, o mais pequeno poss&iacute;vel que evite o comportamento de chattering.</p><p>Este &eacute; um melhor sistema que o anterior.</p><h2 id="15">Exerc&iacute;cio 11</h2><p><h3>Controlador completo</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
 
@@ -146,26 +500,34 @@ sim(<span class="string">'modified_controller'</span>);
 figure;
 plot(tout, y);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.4 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+title(<span class="string">'Fig.22 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 
 figure;
 plot(tout, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.5 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.23 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
 
 figure;
 plot(y, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.6 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.24 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
-</pre><img vspace="5" hspace="5" src="lab2_04.png" alt=""> <img vspace="5" hspace="5" src="lab2_05.png" alt=""> <img vspace="5" hspace="5" src="lab2_06.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p><h3>Controlador com apenas ramo superior da função f(x)</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
-clear;
-close <span class="string">all</span>;
+
+figure;
+plot(tout, u);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.25 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_21.png" alt=""> <img vspace="5" hspace="5" src="lab2_22.png" alt=""> <img vspace="5" hspace="5" src="lab2_23.png" alt=""> <img vspace="5" hspace="5" src="lab2_24.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Da an&aacute;lise da Fig.22, Fig.23, Fig.24 e Fig.25 podemos verificar que o comportamento de chattering desapareceu tal como foi previsto no exerc&iacute;cio anterior. Tamb&eacute;m podemos ver o efeito do intervalo <img src="lab2_eq07046700233771178818.png" alt="$y_l$"> que eliminou o efeito de chattering a custo da velocidade de resposta do sistema. Esta degrada&ccedil;&atilde;o temporal &eacute; maior quanto maior for <img src="lab2_eq07046700233771178818.png" alt="$y_l$"> que para <img src="lab2_eq02994370638794883880.png" alt="$y_l = 0.2$"> corresponde a um atraso de resposta de aproximadamente 1.5 unidades temporais em rela&ccedil;&atilde;o ao sistema b&aacute;sico em cadeia fechada.</p><p><h3>Controlador com apenas ramo superior da função f(x)</h3></p><pre class="codeinput"><span class="comment">%Valores do controlador completo</span>
+y0 = y;
+dy0 = dy;
+u0 = u;
 
 <span class="comment">%Subsys com apenas o ramo superior</span>
 f = 0;
@@ -189,26 +551,45 @@ k2 = sqrt(2*k1);
 sim(<span class="string">'modified_controller'</span>);
 
 figure;
-plot(tout, y);
+plot(tout, y0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(tout, y, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.7 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+title(<span class="string">'Fig.26 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
+legend();
 
 figure;
-plot(tout, dy);
+plot(tout, dy0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(tout, dy, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.8 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.27 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+legend(<span class="string">'Location'</span>, <span class="string">'NorthWest'</span>);
 
 figure;
-plot(y, dy);
+plot(y0, dy0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(y, dy, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.9 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.28 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
-</pre><img vspace="5" hspace="5" src="lab2_07.png" alt=""> <img vspace="5" hspace="5" src="lab2_08.png" alt=""> <img vspace="5" hspace="5" src="lab2_09.png" alt=""> <p><b>Coment&aacute;rios:</b></p><h2 id="7">Exerc&iacute;cio 12</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+legend();
+
+figure;
+plot(tout, u0, <span class="string">"DisplayName"</span>, <span class="string">"completo"</span>);
+hold <span class="string">on</span>;
+plot(tout, u, <span class="string">"DisplayName"</span>, <span class="string">"ramo superior"</span>);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.29 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+legend();
+</pre><img vspace="5" hspace="5" src="lab2_25.png" alt=""> <img vspace="5" hspace="5" src="lab2_26.png" alt=""> <img vspace="5" hspace="5" src="lab2_27.png" alt=""> <img vspace="5" hspace="5" src="lab2_28.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Apartir da an&aacute;lise da Fig.26, Fig.27, Fig.28 e Fig.29 podemos concluir que o controlador com o Subsys descrito apenas pelo ramo superior tem um maior overshot no Sinal de Controlo o que por sua vez corresponde a uma velocidade m&aacute;xima maior e uma acelara&ccedil;&atilde;o m&aacute;xima superior, desnecess&aacute;rias pois nada contribuem para a velocidade de resposta do sistema sendo o controlador completo de superior qualidade nestas condi&ccedil;&otilde;es pois evita consumo e desgaste desnecess&aacute;rio no motor e nas pe&ccedil;as constituintes do sistema.</p><h2 id="19">Exerc&iacute;cio 12</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
 
@@ -236,24 +617,31 @@ sim(<span class="string">'modified_controller'</span>);
 figure;
 plot(tout, y);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.10 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+title(<span class="string">'Fig.30 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 
 figure;
 plot(tout, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.11 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.31 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
 
 figure;
 plot(y, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.12 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.32 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
-</pre><img vspace="5" hspace="5" src="lab2_10.png" alt=""> <img vspace="5" hspace="5" src="lab2_11.png" alt=""> <img vspace="5" hspace="5" src="lab2_12.png" alt=""> <p><b>Coment&aacute;rios:</b></p><h2 id="9">Exerc&iacute;cio 13</h2><p><h3>Exercício 13.1 - Referência por steps</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+
+figure;
+plot(tout, u);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.33 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_29.png" alt=""> <img vspace="5" hspace="5" src="lab2_30.png" alt=""> <img vspace="5" hspace="5" src="lab2_31.png" alt=""> <img vspace="5" hspace="5" src="lab2_32.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Podemos verificar atrav&eacute;s da Fig.30, Fig.31, Fig.32 e Fig.33 que mesmo com uma perturba&ccedil;&atilde;o de <img src="lab2_eq04131583436249398715.png" alt="$b=0.025$"> o sistema ainda converge para os valores pretendidos. Tal n&atilde;o se verifica no caso do sistema em cadeia aberta do Exerc&iacute;cio 7. Conclui-se portanto que este sistema &eacute; muito mais robusto a perturba&ccedil;&otilde;es externas que o sistema em cadeia aberto anterior.</p><h2 id="21">Exerc&iacute;cio 13</h2><p><h3>Exercício 13.1 - Referência por steps</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
 
@@ -278,7 +666,7 @@ sim(<span class="string">'steps'</span>);
 figure;
 plot(tout, steps);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.13 - Refer&ecirc;ncia por steps'</span>);
+title(<span class="string">'Fig.34 - Refer&ecirc;ncia por steps'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Valor Refer&ecirc;ncia'</span>);
 
@@ -289,7 +677,7 @@ plot(tout, steps, <span class="string">"DisplayName"</span>, <span class="string
 hold <span class="string">on</span>;
 plot(tout, y, <span class="string">"DisplayName"</span>, <span class="string">"y"</span>);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.14 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+title(<span class="string">'Fig.35 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 legend();
@@ -297,17 +685,24 @@ legend();
 figure;
 plot(tout, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.15 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.36 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
 
 figure;
 plot(y, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.16 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.37 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
-</pre><img vspace="5" hspace="5" src="lab2_13.png" alt=""> <img vspace="5" hspace="5" src="lab2_14.png" alt=""> <img vspace="5" hspace="5" src="lab2_15.png" alt=""> <img vspace="5" hspace="5" src="lab2_16.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p><h3>Exercício 13.2 - Referência por rampas</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
+
+figure;
+plot(tout, u);
+grid <span class="string">on</span>;
+title(<span class="string">'\textbf{Fig.38 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+xlabel(<span class="string">'Tempo'</span>);
+ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><img vspace="5" hspace="5" src="lab2_33.png" alt=""> <img vspace="5" hspace="5" src="lab2_34.png" alt=""> <img vspace="5" hspace="5" src="lab2_35.png" alt=""> <img vspace="5" hspace="5" src="lab2_36.png" alt=""> <img vspace="5" hspace="5" src="lab2_37.png" alt=""> <p><b>Coment&aacute;rios:</b> Podemos observar apartir na Fig.35 que a posi&ccedil;&atilde;o da cabe&ccedil;a de leitura tenta seguir o sinal de refer&ecirc;ncia por steps mas como podemos ver no &iacute;nicio do gr&aacute;fico, como o sistema n&atilde;o &eacute; inst&acirc;ntaneo quando o intervalo de tempo &eacute; pequeno o sistema pode n&atilde;o conseguir atingir o valor de refer&ecirc;ncia. Tamb&eacute;m se pode verificar o atraso de resposta nos instantes posteriores, caso existam muitas varia&ccedil;&otilde;es de per&iacute;odo pequeno o sistema pode tornar-se oscilat&oacute;rio sem nunca chegar ao sinal de refer&ecirc;ncia.</p><p><h3>Exercício 13.2 - Referência por rampas</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
 
@@ -332,7 +727,7 @@ sim(<span class="string">'ramps'</span>);
 figure;
 plot(tout, ramps);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.17 - Refer&ecirc;ncia por rampas'</span>);
+title(<span class="string">'Fig.39 - Refer&ecirc;ncia por rampas'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Valor Refer&ecirc;ncia'</span>);
 
@@ -343,7 +738,7 @@ plot(tout, ramps, <span class="string">"DisplayName"</span>, <span class="string
 hold <span class="string">on</span>;
 plot(tout, y, <span class="string">"DisplayName"</span>, <span class="string">"y"</span>);
 grid <span class="string">on</span>;
-title(<span class="string">'Fig.18 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
+title(<span class="string">'Fig.40 - Evolu&ccedil;&atilde;o temporal da posi&ccedil;&atilde;o radial da cabe&ccedil;a (y)'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 legend(<span class="string">'Location'</span>, <span class="string">'NorthWest'</span>);
@@ -351,22 +746,487 @@ legend(<span class="string">'Location'</span>, <span class="string">'NorthWest'<
 figure;
 plot(tout, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.19 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.41 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
 
 figure;
 plot(y, dy);
 grid <span class="string">on</span>;
-title(<span class="string">'\textbf{Fig.20 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
+title(<span class="string">'\textbf{Fig.42 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
-
-<span class="comment">%Reset do ambiente de trabalho</span>
+</pre><img vspace="5" hspace="5" src="lab2_38.png" alt=""> <img vspace="5" hspace="5" src="lab2_39.png" alt=""> <img vspace="5" hspace="5" src="lab2_40.png" alt=""> <img vspace="5" hspace="5" src="lab2_41.png" alt=""> <p><b>Coment&aacute;rios:</b> No caso em que a refer&ecirc;ncia &eacute; dada por uma sequ&ecirc;ncia de rampas podemos verificar que o sinal t&ecirc;m dificuldade a seguir as mesmas porque tem um atraso de resposta e limites f&iacute;sicos de velocidade o que impede o sistema de conseguir responder &agrave; refer&ecirc;ncia antes desta voltar a zero como podemos observar na Fig.40. Tamb&eacute;m podemos concluir da Fig.41, apartir dos picos de velocidade temporalmente coincidentes com as rampas de refer&ecirc;ncia que o sistema tenta seguir o sinal de refer&ecirc;ncia sem grande sucesso. No caso da ultima rampa que tende para infinito podemos verificar que o sistema tenta seguir a mesma mantendo um erro constante, isto &eacute; devido a existir uma limita&ccedil;&atilde;o de satura&ccedil;&atilde;o do Sinal de Controlo que corresponde aos limites f&iacute;sicos do sistema, ou seja, o limite de velocidade e acelara&ccedil;&atilde;o da cabe&ccedil;a do mesmo.</p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
-</pre><p><b>Coment&aacute;rios:</b></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
+%% Modelação e Simulação - Laboratório 2
+%
+% Carlos Silva - 81323 
+%
+% Ricardo Espadinha - 84178
+%
+% Grupo 33 - Segunda-feira, 10:00h LSDC1
+%
+% 2018/2019 - 2º Semestre
+
+%% Exercício 2 - Teste da Geração do Impulso Protótipo
+%Reset do ambiente de trabalho
+clear;
+close all;
+
+testebeta = [0.2 0.6 1];
+testetempo = linspace(-1,1, 1000);
+
+for i=1:length(testebeta)
+    pb = ImpulsoPrototipo(testetempo, testebeta(i));
+    
+    plot(testetempo, pb, 'DisplayName', sprintf('\\beta=%.1f', testebeta(i)));
+    hold on;
+end
+
+legend('Location','northeastoutside');
+
+grid on;
+xlabel('Tempo');
+ylabel('Impulso Protótipo')
+title(sprintf('Fig.1 - Função de Geração do Impulso Protótipo p_\\beta(t)'));
+
+%%
+% *Comentários:* Verifica-se que quanto maior for o valor de beta, menor é o tempo que o
+% sinal permanece a 1 (área total do triângulo). Analisando, por exemplo, o
+% caso em que $\beta=1$, numa convolução entre o sinal triangular e rectangular
+% descritos no enunciado, o sinal triangular apenas se encontra todo
+% "coberto" pelo rectangular num instante (t=0).
+% Aplicando a lógica inversa, no sinal em que $\beta=0.2$, o impulso gerado
+% aproxima-se mais do rectangular.
+
+%% Exercício 3 - Teste da Geração do Sinal u(t)
+%Reset do ambiente de trabalho
+ clear;
+ close all;
+
+ T = 6;
+
+%Fixar beta=1 (Impulso Protótipo aproximadamente triângular) para observar o efeito de alfa
+beta = 1;
+U1 = -1;
+U2 = 1;
+n1 = 1000;
+n2 = 1000;
+ 
+testealpha = [0.5 1 2];
+
+for i=1:length(testealpha)
+    
+    
+    [u, ut] = sinalu(T, testealpha(i), beta, U1, U2, n1, n2);
+    
+    plot(ut, u, 'DisplayName', sprintf('\\alpha=%.1f', testealpha(i)));
+    hold on;
+end
+
+legend('Location','northeastoutside');
+
+grid on;
+xlabel('Tempo');
+ylabel('Sinal de Controlo u(t)')
+title(sprintf('Fig.2 - Sinal de Controlo u(t) a partir de p_\\beta(t) (\\beta=1)'));
+
+%%
+% *Comentários:* Como podemos observar, a função gera u(t) através do Impulso Protótipo.
+% Fixaram-se todos os valores à excepção do alpha, de modo a ver o impacto
+% deste. Verifica-se o esperado, tendo em conta a relação entre T1 e T2. Por
+% exemplo, para alpha=1 => T1=T2.
+
+
+%% Exercício 7 - Simulação do Sistema para diversos valores de alpha e beta
+%Reset do ambiente de trabalho
+ clear;
+ close all;
+
+%Condições Iniciais
+y0 = 1;
+dy0 = 0;
+n1 = 100;
+n2 = 100;
+
+%Testes iniciais para b=0 (Sistema não Perturbado)
+b = 0;
+
+%Testes fixando alpha=1 e variando beta=0.1 / beta=0.5 / beta=1
+alpha = 1; %T minimo
+beta = [0.1 0.5 1]; 
+
+ydy_a = figure;
+planoFase_a = figure;
+sinaisU_a = figure;
+
+for i=1:length(beta)
+    
+    %Função que calcula U1, U2 e T de acordo com as condições que se
+    %concluiram pela análise teórica
+    [U1, U2, T] = GetUsT(alpha, beta(i));
+    
+    %Gerar sinal u(t) e correr a simulação
+    [u, ut] = sinalu(T, alpha, beta(i), U1, U2, n1, n2);
+    u_t = [ut', u'];
+    sim('Q7');
+    
+    figure(sinaisU_a);
+    plot(ut, u, 'DisplayName', sprintf('\\beta=%.1f', beta(i)));
+    hold on;
+    
+    figure(ydy_a);
+    plot(tout, dy, 'DisplayName', sprintf('dy, \\beta=%.1f', beta(i)));
+    hold on;
+    plot(tout, y,'DisplayName', sprintf('y, \\beta=%.1f', beta(i)));
+    
+    figure(planoFase_a);
+    plot(y, dy, 'DisplayName', sprintf('\\beta=%.1f', beta(i)));
+    hold on;
+end
+
+%Informação de cada plot
+figure(sinaisU_a);
+legend('Location','northeast');
+grid on;
+xlabel('Tempo');
+ylabel('Sinal de Controlo u(t)')
+title(sprintf('Fig.3 - Sinais de Controlo u(t) para \\alpha=1'));
+
+figure(ydy_a);
+legend('Location','northeast');
+grid on;
+xlabel('Tempo');
+ylabel('y e dy')
+title(sprintf('Fig.4 - Posição e Velocidade da Cabeça Magnética para \\alpha=1'));
+
+figure(planoFase_a);
+legend('Location','northeast');
+grid on;
+xlabel('y');
+ylabel('dy')
+title(sprintf('Fig.5 - Plano de Fase para \\alpha=1'));
+
+%%
+% *Comentários:* Verifica-se que o valor de $\beta$ tem influencia em
+% T (maior $\beta$ leva a um maior T).Isto é de esperar pela forma como é
+% gerado o impulso Prototipo. Da mesmo forma, também é possivel observar
+% que, para valores muito pequenos de $\beta$, u(t) aproxima-se de um sinal
+% rectângular e que, pela lógica contrária. para valores de $\beta$ muito
+% próximos de 1, u(t) aproxima-se de um sinal triângular.
+% Em relação à Posição e Velocidade da Cabeça, pode-se verificar que para
+% todos os casos, o sistema possui os valores finais desejados, no entanto demora
+% mais tempo a atingir os mesmos quanto maior for o valor de $\beta$.
+
+
+%Testes fixando beta=0.2 e variando alpha=1 / alpha=2 / alpha=4
+beta = 0.1; %u(t) aproximandamente rectângular
+alpha = [0.7 1 2]; 
+
+ydy_b = figure;
+planoFase_b = figure;
+sinaisU_b = figure;
+
+
+for i=1:length(alpha)
+    
+    %Função que calcula U1, U2 e T de acordo com as condições que se
+    %concluiram pela análise teórica
+    [U1, U2, T] = GetUsT(alpha(i), beta);
+    
+    %Gerar sinal u(t) e correr a simulação
+    [u, ut] = sinalu(T, alpha(i), beta, U1, U2, n1, n2);
+    u_t = [ut', u'];
+    sim('Q7');
+    
+    figure(sinaisU_b);
+    plot(ut, u, 'DisplayName', sprintf('\\alpha=%.1f', alpha(i)));
+    hold on;
+    
+    figure(ydy_b);
+    plot(tout, dy, 'DisplayName', sprintf('dy, \\alpha=%.1f', alpha(i)));
+    hold on;
+    plot(tout, y,'DisplayName', sprintf('y, \\alpha=%.1f', alpha(i)));
+    
+    figure(planoFase_b);
+    plot(y, dy, 'DisplayName', sprintf('\\alpha=%.1f', alpha(i)));
+    hold on;
+end
+
+%Informação de cada plot
+figure(sinaisU_b);
+legend('Location','northeast');
+grid on;
+xlabel('Tempo');
+ylabel('Sinal de Controlo u(t)')
+title(sprintf('Fig.6 - Sinais de Controlo u(t) para \\beta=0.2'));
+
+figure(ydy_b);
+legend('Location','northeast');
+grid on;
+xlabel('Tempo');
+ylabel('y e dy')
+title(sprintf('Fig.7 - Posição e Velocidade da Cabeça Magnética para \\beta=0.2'));
+
+figure(planoFase_b);
+legend('Location','northeast');
+grid on;
+xlabel('y');
+ylabel('dy')
+title(sprintf('Fig.8 - Plano de Fase para \\beta=0.2'));
+
+%%
+% *Comentários:* Fixou-se $\beta=0.2$ de forma a que u(t) fosse,
+% aproximadamente, um conjunto de dois sinais rectângulares, como se pode
+% verificar. Ainda no sinal de controlo, pode-se verificar que o $\alpha$
+% possui dois tipos de influencias distintas no sinal: Para
+% valores de $\alpha<1$ T1>T2 e para valores de $\alpha>1$ T1<T2; O valor de T
+% é minimo para $\alpha=1$, como comprovado na parte teórica.
+% Em relação à Posição e Velocidade da Cabeça, pode-se verificar que para
+% todos os casos, o sistema possui os valores finais desejados, no entanto demora
+% menos tempo a atingir os mesmos para $\alpha=1$.
+
+
+%Comparação com uma vesão perturbada do sistema (b=0 e b=0.025)
+
+perturbacao = [0 0.025];
+
+%Testes fixando alpha=1 e variando beta=0.1 / beta=0.5 / beta=1
+alpha = 1; %T minimo
+beta = 0.1; %u(t) aproximadamente rectângular
+
+ydy_pert = figure;
+planoFase_pert = figure;
+sinaisU_pert = figure;
+
+%Função que calcula U1, U2 e T de acordo com as condições que se
+%concluiram pela análise teórica
+[U1, U2, T] = GetUsT(alpha, beta);
+
+%Gerar u(t)
+[u, ut] = sinalu(T, alpha, beta, U1, U2, n1, n2);
+u_t = [ut', u'];
+plot(ut, u);
+grid on;
+xlabel('Tempo');
+ylabel('Sinal de Controlo u(t)');
+title(sprintf('Fig.9 - Sinal de Controlo u(t) para \\alpha=1 e \\beta=0.1'));
+
+for i=1:length(perturbacao)
+    
+    b = perturbacao(i);
+    
+    %Correr Simulação
+    sim('Q7');
+    hold on;
+    
+    figure(ydy_pert);
+    plot(tout, dy, 'DisplayName', sprintf('dy, b=%.3f', b));
+    hold on;
+    plot(tout, y,'DisplayName', sprintf('y, b=%.3f', b));
+    
+    figure(planoFase_pert);
+    plot(y, dy, 'DisplayName', sprintf('b=%.3f', b));
+    hold on;
+end
+
+%Desenhar uma linha para y, dy = 0.025
+figure(ydy_pert);
+plot(tout,0.025*ones(size(tout)), 'DisplayName', 'y, dy = 0.025');
+
+%Informação de cada plot
+legend('Location','northeast');
+grid on;
+xlabel('Tempo');
+ylabel('y e dy');
+title(sprintf('Fig.10 - Posição e Velocidade da Cabeça Magnética para b=0 e b=0.025'));
+
+figure(planoFase_pert);
+legend('Location','northeast');
+grid on;
+xlabel('y');
+ylabel('dy');
+title(sprintf('Fig.11 - Plano de Fase para b=0 e b=0.025'));
+
+%%
+% *Comentários:* De acordo com os resultados anteriores, fixou-se
+% $\alpha=1$
+% (para que T fosse mínimo) e $\beta=0.1$ (para que u(t) se aproxime de um
+% conjunto de dois sinais rectângulares). Assim, obteve-se o u(t) discrito 
+% anteriormente e, de forma a observar a influencia
+% da perturbação b, simulou-se esse sistema para b=0 (s/ perturbação) e para
+% b=0.0250 (c/ perturbação). Assim, observa-se que existe uma perturbação no
+% valor final da Posição e da Velocidade em relação a valor desejado (0), 
+% correspondente a b.
+%
+% Também é importante de notar que, para todos os casos observados,
+% verifica-se a condição das amplitudes serem sempre <=1.
+
+
+%% Exercício 8 - Representação da função de geração da entrada u(y, dy)
+
+%Reset do ambiente de trabalho
+ clear;
+ close all;
+
+
+%Vector de posições e velocidades para criar meshgrid de teste do
+%controlador
+y = linspace (-2, 2);
+dy = linspace (-2, 2);
+
+[Y, dY] = meshgrid(y, dy);
+
+%=== Região tracejada do Diagrama de Blocos ===
+%s1: Sinal que entra no bloco subsys
+s1 = 0 - Y;
+
+%s2: Sinal que sai do bloco subsys
+s2 = sign(s1).*sqrt(2*abs(s1));
+
+%s3: Sinal que entra no bloco sign, composto por s2 e -dY
+s3 = s2 - dY;
+
+%U: Sinal que sai da região tracejada
+U = sign(s3);
+%==============================================
+
+figure;
+surf(Y, dY, U);
+view(45, 45);
+grid on;
+title('Fig.12 - u(y, $\dot{y}$)', 'Interpreter', 'latex');
+xlabel('Posição (y)');
+ylabel('Velocidade ($\dot{y}$)', 'Interpreter', 'latex');
+zlabel('Sinal de Controlo (u)');
+title('\textbf{Fig.13 - Fun\c{c}\~ao de gera\c{c}\~ao da entrada u(y, $\dot{y}$)}', 'Interpreter', 'latex');
+
+figure;
+contour(Y, dY, U);
+grid on;
+xlabel('y');
+ylabel('$\dot y$','Interpreter','LaTex')
+zlabel('u');
+title('Fig.14 - Curva de Comutação');
+
+%%
+% Foi calculado que U = sign( ((sign(-Y))*(sqrt(2*abs(-Y)))) - dY). É de
+% notar que, de forma a que a multiplicação das matrizes seja feita
+% elemento a elemento, em vez da multiplicação normal de matrizes, é
+% necessário colocar um '.' antes do '*'.
+%
+% Este novo sistema em cadeia fechada, comporta-se de maneira diferente do
+% anterior (em malha aberta): Este sistema, procura ajustar a sua posição
+% dinamicamente através da alteração de valores da velocidade. Esta relação
+% é conseguida através de trajetórias parabólicas que, dependendo do valor
+% do impulso numa dada posição, tendem para + ou - infinito, de forma a
+% tentar sempre aproximar-se da posição de equilíbrio.
+% Isto consegue-se verificar bastante bem através da Curva de Comutação representada.  
+ 
+
+%% Exercício 9
+%
+%Reset do ambiente de trabalho
+ clear;
+ close all;
+
+ %Simulação do sistema em malha aberta para impulsos aproximadamente rectangulares
+ 
+ beta = 0.1;   %Impulso aproximadamente rectângular
+ alpha = 1;  %T minimo
+ b = 0;
+ n1 = 100;
+ n2 = 100;
+ y0 = 1;
+ dy0 = 0;
+ 
+ [U1, U2, T] = GetUsT(alpha, beta);
+    
+ [u, ut] = sinalu(T, alpha, beta, U1, U2, n1, n2);
+ u_t = [ut', u'];
+ sim('Q7');
+ 
+ pos = figure;
+ vel = figure;
+ fase = figure;
+ Us = figure;
+ 
+figure(pos);
+plot(tout, y, 'DisplayName', 'Malha Aberta');
+title('Fig.15 - Posição da Cabeça Magnética');
+grid on;
+xlabel('Tempo');
+ylabel('y');
+hold on;
+
+figure(vel);
+plot(tout, dy, 'DisplayName', 'Malha Aberta');
+title('Fig.16 - Velocidadeo da Cabeça Magnética');
+grid on;
+xlabel('Tempo');
+ylabel('dy');
+hold on;
+
+figure(fase);
+plot(y, dy, 'DisplayName', 'Malha Aberta');
+title('Fig.17 - Plano de Fase');
+grid on;
+xlabel('Posição');
+ylabel('Velocidade');
+hold on;
+
+figure(Us);
+plot(ut, u, 'DisplayName', 'Malha Aberta');
+title('Fig.18 - Sinal de Controlo u(t)');
+grid on;
+xlabel('Tempo');
+ylabel('u');
+hold on;
+
+%Simulação em malha fechada
+t_paragem = 7;
+y0 = 1;
+dy0 = 0;
+
+sim('Q9');
+
+figure(pos);
+plot(tout, y, 'DisplayName', 'Malha Fechada');
+legend('Location','northeast');
+
+figure(vel);
+plot(tout, dy, 'DisplayName', 'Malha Fechada');
+legend('Location','northeast');
+
+figure(fase);
+plot(y, dy, 'DisplayName', 'Malha Fechada');
+legend('Location','northeast');
+
+figure(Us);
+plot(tout, u, 'DisplayName', 'Malha Fechada');
+legend('Location','northeast');
+
+%%
+% *Comentário:*
+%
+% Observa-se que o sistema comporta-se de forma semelhante 
+% aos anteriores, tendendo  para 0. No entanto, neste caso, o sistema nunca 
+% ficará estável neste ponto de equilíbrio, oscilando entre valores próximos 
+% deste, no caso da Posição e Velocidade, ou encurvando em torno de (0, 0) , 
+% no caso do Plano de Fase. Também se verifica uma alteração (com uma 
+% frequência cada vez maior) entre o máximo e o mínimo (1 e -1).
+%
+% Isto é explicado, pelo facto de que na origem a derivada é infinita, 
+% ou seja, o sistema não consegue atingir o valor de referencia, oscilando 
+% à volta do mesmo. Este comportamento é o chamado chattering. Logicamente,  
+% que isto é problemático, pois o facto do sistema nunca ficar estável, 
+% significa fisicamente que a cabeça nunca para, resultando numa leitura 
+% incorreta dos dados no disco,  consumindo energia e componentes 
+% indefinidamente.
+
 %% Exercício 10
 %Reset do ambiente de trabalho
 clear;
@@ -382,8 +1242,8 @@ dy = linspace (-2, 2);
 
 [Y, dY] = meshgrid(y, dy);
 
-%Figure counter para o for
-fn = 0;
+%Figure counter
+fc = 0;
 
 for n = 1:length(yl)
     %Inicialização de u com zeros em todos os indexes
@@ -411,18 +1271,18 @@ for n = 1:length(yl)
     U(U < -1) = -1;
 
     figure;
-    fn = fn+1;
+    fc = fc + 1;
     surf(y, dy, U);
     view(70, 40);
     grid on;
-    title(sprintf('Fig.%d - Variação do Sinal de Controlo (u) para y_l=%.1f', fn, yl(n)));
+    title(sprintf('Fig.%d - Variação do Sinal de Controlo (u) para y_l=%.1f', 18+fc, yl(n)));
     xlabel('Posição (y)');
     ylabel('Velocidade ($\dot{y}$)', 'Interpreter', 'latex');
     zlabel('Sinal de Controlo (u)');
 end
 
 %%
-% *Comentários:*
+% *Comentários:* 
 % 
 % Pela análise do diagrama de blocos da Fig.5 do relatório
 % verificou-se que o sistema consistia do Subsys dado pela equação de dois
@@ -445,12 +1305,15 @@ end
 % anterior diferindo nos pontos dentro do intervalo de yl no qual a
 % derivada da função do Subsys não tende para infinito, ou seja, não existe
 % a mesma discrepancia entre valores perto da origem, logo em vez da cabeça 
-% disco oscilar constantemente à volta da orgirem (caso da Fig.1) temos uma
+% do disco oscilar constantemente à volta da orgirem (caso da Fig.19) temos uma
 % desacelaração mais suave à medida que se aproxima do valor de referência 
 % evitando assim o comportamento de chattering. Também podemos concluir da
-% Fig.2 e Fig.3 que quanto maior for esse intervalo, yl, mais sauve é a
+% Fig.20 e Fig.21 que quanto maior for esse intervalo, yl, mais sauve é a
 % desacelaração. Por isso deve se escolher yl de maneira a não prejudicar
-% muito o tempo que a cabeça leva a chegar a posição de referência.
+% muito o tempo que a cabeça leva a chegar a posição de referência, ou
+% seja, o mais pequeno possível que evite o comportamento de chattering.
+%
+% Este é um melhor sistema que o anterior.
 
 %% Exercício 11
 % <html><h3>Controlador completo</h3></html>
@@ -482,32 +1345,49 @@ sim('modified_controller');
 figure;
 plot(tout, y);
 grid on;
-title('Fig.4 - Evolução temporal da posição radial da cabeça (y)');
+title('Fig.22 - Evolução temporal da posição radial da cabeça (y)');
 xlabel('Tempo');
 ylabel('Posição (y)');
 
 figure;
 plot(tout, dy);
 grid on;
-title('\textbf{Fig.5 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.23 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Tempo');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
 figure;
 plot(y, dy);
 grid on;
-title('\textbf{Fig.6 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.24 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Posição (y)');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
+figure;
+plot(tout, u);
+grid on;
+title('\textbf{Fig.25 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Sinal de Controlo (u(y, $\dot{y}$))','Interpreter','latex');
+
 %% 
 % *Comentários:*
+%
+% Da análise da Fig.22, Fig.23, Fig.24 e Fig.25 podemos verificar que o
+% comportamento
+% de chattering desapareceu tal como foi previsto no exercício anterior.
+% Também podemos ver o efeito do intervalo $y_l$ que eliminou o efeito de
+% chattering a custo da velocidade de resposta do sistema. Esta degradação
+% temporal é maior quanto maior for $y_l$ que para $y_l = 0.2$ corresponde
+% a um atraso de resposta de aproximadamente 1.5 unidades temporais em
+% relação ao sistema básico em cadeia fechada.
 
 %%
 % <html><h3>Controlador com apenas ramo superior da função f(x)</h3></html>
-%Reset do ambiente de trabalho
-clear;
-close all;
+%Valores do controlador completo
+y0 = y;
+dy0 = dy;
+u0 = u;
 
 %Subsys com apenas o ramo superior
 f = 0;
@@ -531,28 +1411,56 @@ k2 = sqrt(2*k1);
 sim('modified_controller');
 
 figure;
-plot(tout, y);
+plot(tout, y0, "DisplayName", "completo");
+hold on;
+plot(tout, y, "DisplayName", "ramo superior");
 grid on;
-title('Fig.7 - Evolução temporal da posição radial da cabeça (y)');
+title('Fig.26 - Evolução temporal da posição radial da cabeça (y)');
 xlabel('Tempo');
 ylabel('Posição (y)');
+legend();
 
 figure;
-plot(tout, dy);
+plot(tout, dy0, "DisplayName", "completo");
+hold on;
+plot(tout, dy, "DisplayName", "ramo superior");
 grid on;
-title('\textbf{Fig.8 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.27 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Tempo');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+legend('Location', 'NorthWest');
 
 figure;
-plot(y, dy);
+plot(y0, dy0, "DisplayName", "completo");
+hold on;
+plot(y, dy, "DisplayName", "ramo superior");
 grid on;
-title('\textbf{Fig.9 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.28 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Posição (y)');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+legend();
+
+figure;
+plot(tout, u0, "DisplayName", "completo");
+hold on;
+plot(tout, u, "DisplayName", "ramo superior");
+grid on;
+title('\textbf{Fig.29 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Sinal de Controlo (u(y, $\dot{y}$))','Interpreter','latex');
+legend();
 
 %%
 % *Comentários:*
+%
+% Apartir da análise da Fig.26, Fig.27, Fig.28 e Fig.29 podemos concluir que o
+% controlador com o Subsys descrito apenas pelo ramo superior tem um maior
+% overshot no Sinal de Controlo o que por sua vez corresponde a uma
+% velocidade máxima maior e uma acelaração máxima superior, desnecessárias 
+% pois nada contribuem para a velocidade de resposta do sistema sendo o
+% controlador completo de superior qualidade nestas condições pois evita
+% consumo e desgaste desnecessário no motor e nas peças constituintes do
+% sistema.
 
 %% Exercício 12
 %Reset do ambiente de trabalho
@@ -583,26 +1491,39 @@ sim('modified_controller');
 figure;
 plot(tout, y);
 grid on;
-title('Fig.10 - Evolução temporal da posição radial da cabeça (y)');
+title('Fig.30 - Evolução temporal da posição radial da cabeça (y)');
 xlabel('Tempo');
 ylabel('Posição (y)');
 
 figure;
 plot(tout, dy);
 grid on;
-title('\textbf{Fig.11 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.31 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Tempo');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
 figure;
 plot(y, dy);
 grid on;
-title('\textbf{Fig.12 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.32 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Posição (y)');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
+figure;
+plot(tout, u);
+grid on;
+title('\textbf{Fig.33 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Sinal de Controlo (u(y, $\dot{y}$))','Interpreter','latex');
+
 %%
 % *Comentários:*
+% 
+% Podemos verificar através da Fig.30, Fig.31, Fig.32 e Fig.33 que mesmo com uma
+% perturbação de $b=0.025$ o sistema ainda converge para os valores
+% pretendidos. Tal não se verifica no caso do sistema em cadeia aberta do 
+% Exercício 7. Conclui-se portanto que este sistema é muito mais robusto a
+% perturbações externas que o sistema em cadeia aberto anterior.
 
 %% Exercício 13
 % <html><h3>Exercício 13.1 - Referência por steps</h3></html>
@@ -631,7 +1552,7 @@ sim('steps');
 figure;
 plot(tout, steps);
 grid on;
-title('Fig.13 - Referência por steps');
+title('Fig.34 - Referência por steps');
 xlabel('Tempo');
 ylabel('Valor Referência');
 
@@ -642,7 +1563,7 @@ plot(tout, steps, "DisplayName", "Ref");
 hold on;
 plot(tout, y, "DisplayName", "y");
 grid on;
-title('Fig.14 - Evolução temporal da posição radial da cabeça (y)');
+title('Fig.35 - Evolução temporal da posição radial da cabeça (y)');
 xlabel('Tempo');
 ylabel('Posição (y)');
 legend();
@@ -650,19 +1571,33 @@ legend();
 figure;
 plot(tout, dy);
 grid on;
-title('\textbf{Fig.15 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.36 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Tempo');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
 figure;
 plot(y, dy);
 grid on;
-title('\textbf{Fig.16 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.37 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Posição (y)');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
+figure;
+plot(tout, u);
+grid on;
+title('\textbf{Fig.38 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}', 'Interpreter', 'latex');
+xlabel('Tempo');
+ylabel('Sinal de Controlo (u(y, $\dot{y}$))','Interpreter','latex');
+
 %%
 % *Comentários:*
+% Podemos observar apartir na Fig.35 que a posição da cabeça de leitura
+% tenta seguir o sinal de referência por steps mas como podemos ver no
+% ínicio do gráfico, como o sistema não é instântaneo quando o intervalo de
+% tempo é pequeno o sistema pode não conseguir atingir o valor de
+% referência. Também se pode verificar o atraso de resposta nos instantes
+% posteriores, caso existam muitas variações de período pequeno o sistema
+% pode tornar-se oscilatório sem nunca chegar ao sinal de referência.
 
 %%
 % <html><h3>Exercício 13.2 - Referência por rampas</h3></html>
@@ -691,7 +1626,7 @@ sim('ramps');
 figure;
 plot(tout, ramps);
 grid on;
-title('Fig.17 - Referência por rampas');
+title('Fig.39 - Referência por rampas');
 xlabel('Tempo');
 ylabel('Valor Referência');
 
@@ -702,7 +1637,7 @@ plot(tout, ramps, "DisplayName", "Ref");
 hold on;
 plot(tout, y, "DisplayName", "y");
 grid on;
-title('Fig.18 - Evolução temporal da posição radial da cabeça (y)');
+title('Fig.40 - Evolução temporal da posição radial da cabeça (y)');
 xlabel('Tempo');
 ylabel('Posição (y)');
 legend('Location', 'NorthWest');
@@ -710,21 +1645,34 @@ legend('Location', 'NorthWest');
 figure;
 plot(tout, dy);
 grid on;
-title('\textbf{Fig.19 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.41 - Evolu\c{c}\~ao temporal da velocidade radial da cabe\c{c}a ($\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Tempo');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
 
 figure;
 plot(y, dy);
 grid on;
-title('\textbf{Fig.20 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
+title('\textbf{Fig.42 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}', 'Interpreter', 'latex');
 xlabel('Posição (y)');
 ylabel('Velocidade ($\dot{y}$)','Interpreter','latex');
+
+%%
+% *Comentários:*
+% No caso em que a referência é dada por uma sequência de rampas podemos 
+% verificar que o sinal têm dificuldade a seguir as mesmas porque tem um
+% atraso de resposta e limites físicos de velocidade o que impede o sistema
+% de conseguir responder à referência antes desta voltar a zero como
+% podemos observar na Fig.40. Também podemos concluir da Fig.41, apartir dos 
+% picos de velocidade temporalmente coincidentes com as rampas de referência
+% que o sistema tenta seguir o sinal de referência sem grande sucesso. No caso
+% da ultima rampa que tende para infinito podemos verificar que o sistema 
+% tenta seguir a mesma mantendo um erro constante, isto é devido a existir
+% uma limitação de saturação do Sinal de Controlo que corresponde aos
+% limites físicos do sistema, ou seja, o limite de velocidade e acelaração
+% da cabeça do mesmo.
 
 %Reset do ambiente de trabalho
 clear;
 close all;
-%%
-% *Comentários:*
 ##### SOURCE END #####
 --></body></html>
