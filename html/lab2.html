@@ -183,6 +183,12 @@ grid <span class="string">on</span>;
 xlabel(<span class="string">'y'</span>);
 ylabel(<span class="string">'dy'</span>)
 title(sprintf(<span class="string">'Fig.5 - Plano de Fase para \\alpha=1'</span>));
+</pre><pre class="codeoutput">Warning: The file '&lt;a href="matlab:open_system ('Q7')"&gt;Q7&lt;/a&gt;.slx' is shadowing
+a more recently saved MDL file, '&lt;a href="matlab:open_system
+('Q7')"&gt;Q7&lt;/a&gt;.mdl', in the same folder.  For more information see &lt;a
+href="matlab:helpview([docroot '/toolbox/simulink/helptargets.map'],
+'shadowing')"&gt;"Avoiding Problems with Shadowed Files"&lt;/a&gt; in the Simulink
+documentation. 
 </pre><img vspace="5" hspace="5" src="lab2_03.png" alt=""> <img vspace="5" hspace="5" src="lab2_04.png" alt=""> <img vspace="5" hspace="5" src="lab2_05.png" alt=""> <p><b>Coment&aacute;rios:</b> Verifica-se que o valor de <img src="lab2_eq17331442575217596290.png" alt="$\beta$"> tem influencia em T (maior <img src="lab2_eq17331442575217596290.png" alt="$\beta$"> leva a um maior T).Isto &eacute; de esperar pela forma como &eacute; gerado o impulso Prototipo. Da mesmo forma, tamb&eacute;m &eacute; possivel observar que, para valores muito pequenos de <img src="lab2_eq17331442575217596290.png" alt="$\beta$">, u(t) aproxima-se de um sinal rect&acirc;ngular e que, pela l&oacute;gica contr&aacute;ria. para valores de <img src="lab2_eq17331442575217596290.png" alt="$\beta$"> muito pr&oacute;ximos de 1, u(t) aproxima-se de um sinal tri&acirc;ngular. Em rela&ccedil;&atilde;o &agrave; Posi&ccedil;&atilde;o e Velocidade da Cabe&ccedil;a, pode-se verificar que para todos os casos, o sistema possui os valores finais desejados, no entanto demora mais tempo a atingir os mesmos quanto maior for o valor de <img src="lab2_eq17331442575217596290.png" alt="$\beta$">.</p><pre class="codeinput"><span class="comment">%Testes fixando beta=0.2 e variando alpha=1 / alpha=2 / alpha=4</span>
 beta = 0.1; <span class="comment">%u(t) aproximandamente rect&acirc;ngular</span>
 alpha = [0.7 1 2];
@@ -420,6 +426,12 @@ legend(<span class="string">'Location'</span>,<span class="string">'northeast'</
 figure(Us);
 plot(tout, u, <span class="string">'DisplayName'</span>, <span class="string">'Malha Fechada'</span>);
 legend(<span class="string">'Location'</span>,<span class="string">'northeast'</span>);
+</pre><pre class="codeoutput">Warning: The file '&lt;a href="matlab:open_system ('Q9')"&gt;Q9&lt;/a&gt;.slx' is shadowing
+a more recently saved MDL file, '&lt;a href="matlab:open_system
+('Q9')"&gt;Q9&lt;/a&gt;.mdl', in the same folder.  For more information see &lt;a
+href="matlab:helpview([docroot '/toolbox/simulink/helptargets.map'],
+'shadowing')"&gt;"Avoiding Problems with Shadowed Files"&lt;/a&gt; in the Simulink
+documentation. 
 </pre><img vspace="5" hspace="5" src="lab2_14.png" alt=""> <img vspace="5" hspace="5" src="lab2_15.png" alt=""> <img vspace="5" hspace="5" src="lab2_16.png" alt=""> <img vspace="5" hspace="5" src="lab2_17.png" alt=""> <p><b>Coment&aacute;rio:</b></p><p>Observa-se que o sistema comporta-se de forma semelhante aos anteriores, tendendo  para 0. No entanto, neste caso, o sistema nunca ficar&aacute; est&aacute;vel neste ponto de equil&iacute;brio, oscilando entre valores pr&oacute;ximos deste, no caso da Posi&ccedil;&atilde;o e Velocidade, ou encurvando em torno de (0, 0) , no caso do Plano de Fase. Tamb&eacute;m se verifica uma altera&ccedil;&atilde;o (com uma frequ&ecirc;ncia cada vez maior) entre o m&aacute;ximo e o m&iacute;nimo (1 e -1).</p><p>Isto &eacute; explicado, pelo facto de que na origem a derivada &eacute; infinita, ou seja, o sistema n&atilde;o consegue atingir o valor de referencia, oscilando &agrave; volta do mesmo. Este comportamento &eacute; o chamado chattering. Logicamente, que isto &eacute; problem&aacute;tico, pois o facto do sistema nunca ficar est&aacute;vel, significa fisicamente que a cabe&ccedil;a nunca para, resultando numa leitura incorreta dos dados no disco,  consumindo energia e componentes indefinidamente.</p><h2 id="13">Exerc&iacute;cio 10</h2><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
@@ -524,6 +536,13 @@ grid <span class="string">on</span>;
 title(<span class="string">'\textbf{Fig.25 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><pre class="codeoutput">Warning: The file '&lt;a href="matlab:open_system
+('modified_controller')"&gt;modified_controller&lt;/a&gt;.slx' is shadowing a more
+recently saved MDL file, '&lt;a href="matlab:open_system
+('modified_controller')"&gt;modified_controller&lt;/a&gt;.mdl', in the same folder.  For
+more information see &lt;a href="matlab:helpview([docroot
+'/toolbox/simulink/helptargets.map'], 'shadowing')"&gt;"Avoiding Problems with
+Shadowed Files"&lt;/a&gt; in the Simulink documentation. 
 </pre><img vspace="5" hspace="5" src="lab2_21.png" alt=""> <img vspace="5" hspace="5" src="lab2_22.png" alt=""> <img vspace="5" hspace="5" src="lab2_23.png" alt=""> <img vspace="5" hspace="5" src="lab2_24.png" alt=""> <p><b>Coment&aacute;rios:</b></p><p>Da an&aacute;lise da Fig.22, Fig.23, Fig.24 e Fig.25 podemos verificar que o comportamento de chattering desapareceu tal como foi previsto no exerc&iacute;cio anterior. Tamb&eacute;m podemos ver o efeito do intervalo <img src="lab2_eq07046700233771178818.png" alt="$y_l$"> que eliminou o efeito de chattering a custo da velocidade de resposta do sistema. Esta degrada&ccedil;&atilde;o temporal &eacute; maior quanto maior for <img src="lab2_eq07046700233771178818.png" alt="$y_l$"> que para <img src="lab2_eq02994370638794883880.png" alt="$y_l = 0.2$"> corresponde a um atraso de resposta de aproximadamente 1.5 unidades temporais em rela&ccedil;&atilde;o ao sistema b&aacute;sico em cadeia fechada.</p><p><h3>Controlador com apenas ramo superior da função f(x)</h3></p><pre class="codeinput"><span class="comment">%Valores do controlador completo</span>
 y0 = y;
 dy0 = dy;
@@ -702,6 +721,18 @@ grid <span class="string">on</span>;
 title(<span class="string">'\textbf{Fig.38 - Evolu\c{c}\~ao temporal do Sinal de Controlo (u(y, $\dot{y}$))}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Tempo'</span>);
 ylabel(<span class="string">'Sinal de Controlo (u(y, $\dot{y}$))'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><pre class="codeoutput">Warning: The file '&lt;a href="matlab:open_system ('steps')"&gt;steps&lt;/a&gt;.slx' is
+shadowing a more recently saved MDL file, '&lt;a href="matlab:open_system
+('steps')"&gt;steps&lt;/a&gt;.mdl', in the same folder.  For more information see &lt;a
+href="matlab:helpview([docroot '/toolbox/simulink/helptargets.map'],
+'shadowing')"&gt;"Avoiding Problems with Shadowed Files"&lt;/a&gt; in the Simulink
+documentation. 
+Warning: The file '&lt;a href="matlab:open_system ('e_131')"&gt;e_131&lt;/a&gt;.slx' is
+shadowing a more recently saved MDL file, '&lt;a href="matlab:open_system
+('e_131')"&gt;e_131&lt;/a&gt;.mdl', in the same folder.  For more information see &lt;a
+href="matlab:helpview([docroot '/toolbox/simulink/helptargets.map'],
+'shadowing')"&gt;"Avoiding Problems with Shadowed Files"&lt;/a&gt; in the Simulink
+documentation. 
 </pre><img vspace="5" hspace="5" src="lab2_33.png" alt=""> <img vspace="5" hspace="5" src="lab2_34.png" alt=""> <img vspace="5" hspace="5" src="lab2_35.png" alt=""> <img vspace="5" hspace="5" src="lab2_36.png" alt=""> <img vspace="5" hspace="5" src="lab2_37.png" alt=""> <p><b>Coment&aacute;rios:</b> Podemos observar apartir na Fig.35 que a posi&ccedil;&atilde;o da cabe&ccedil;a de leitura tenta seguir o sinal de refer&ecirc;ncia por steps mas como podemos ver no &iacute;nicio do gr&aacute;fico, como o sistema n&atilde;o &eacute; inst&acirc;ntaneo quando o intervalo de tempo &eacute; pequeno o sistema pode n&atilde;o conseguir atingir o valor de refer&ecirc;ncia. Tamb&eacute;m se pode verificar o atraso de resposta nos instantes posteriores, caso existam muitas varia&ccedil;&otilde;es de per&iacute;odo pequeno o sistema pode tornar-se oscilat&oacute;rio sem nunca chegar ao sinal de refer&ecirc;ncia.</p><p><h3>Exercício 13.2 - Referência por rampas</h3></p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
@@ -756,6 +787,18 @@ grid <span class="string">on</span>;
 title(<span class="string">'\textbf{Fig.42 - Velocidade em fun\c{c}\~ao da posi\c{c}\~ao da cabe\c{c}a (y, $\dot{y}$)}'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>);
 xlabel(<span class="string">'Posi&ccedil;&atilde;o (y)'</span>);
 ylabel(<span class="string">'Velocidade ($\dot{y}$)'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+</pre><pre class="codeoutput">Warning: The file '&lt;a href="matlab:open_system ('ramps')"&gt;ramps&lt;/a&gt;.slx' is
+shadowing a more recently saved MDL file, '&lt;a href="matlab:open_system
+('ramps')"&gt;ramps&lt;/a&gt;.mdl', in the same folder.  For more information see &lt;a
+href="matlab:helpview([docroot '/toolbox/simulink/helptargets.map'],
+'shadowing')"&gt;"Avoiding Problems with Shadowed Files"&lt;/a&gt; in the Simulink
+documentation. 
+Warning: The file '&lt;a href="matlab:open_system ('e_132')"&gt;e_132&lt;/a&gt;.slx' is
+shadowing a more recently saved MDL file, '&lt;a href="matlab:open_system
+('e_132')"&gt;e_132&lt;/a&gt;.mdl', in the same folder.  For more information see &lt;a
+href="matlab:helpview([docroot '/toolbox/simulink/helptargets.map'],
+'shadowing')"&gt;"Avoiding Problems with Shadowed Files"&lt;/a&gt; in the Simulink
+documentation. 
 </pre><img vspace="5" hspace="5" src="lab2_38.png" alt=""> <img vspace="5" hspace="5" src="lab2_39.png" alt=""> <img vspace="5" hspace="5" src="lab2_40.png" alt=""> <img vspace="5" hspace="5" src="lab2_41.png" alt=""> <p><b>Coment&aacute;rios:</b> No caso em que a refer&ecirc;ncia &eacute; dada por uma sequ&ecirc;ncia de rampas podemos verificar que o sinal t&ecirc;m dificuldade a seguir as mesmas porque tem um atraso de resposta e limites f&iacute;sicos de velocidade o que impede o sistema de conseguir responder &agrave; refer&ecirc;ncia antes desta voltar a zero como podemos observar na Fig.40. Tamb&eacute;m podemos concluir da Fig.41, apartir dos picos de velocidade temporalmente coincidentes com as rampas de refer&ecirc;ncia que o sistema tenta seguir o sinal de refer&ecirc;ncia sem grande sucesso. No caso da ultima rampa que tende para infinito podemos verificar que o sistema tenta seguir a mesma mantendo um erro constante, isto &eacute; devido a existir uma limita&ccedil;&atilde;o de satura&ccedil;&atilde;o do Sinal de Controlo que corresponde aos limites f&iacute;sicos do sistema, ou seja, o limite de velocidade e acelara&ccedil;&atilde;o da cabe&ccedil;a do mesmo.</p><pre class="codeinput"><span class="comment">%Reset do ambiente de trabalho</span>
 clear;
 close <span class="string">all</span>;
